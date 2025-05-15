@@ -43,7 +43,7 @@ public class ConsoleOutputManager {
         var allSymbols = OrganismFactory.getAllDisplaySymbols();
         var organismsBySymbol = cell.getOrganisms().stream()
                 .collect(Collectors.groupingBy(
-                        organism -> organism.getConfig().getDisplaySymbol(),
+                        organism -> organism.getConfig().displaySymbol(),
                         Collectors.mapping(Organism::getId, Collectors.toList())
                 ));
         return allSymbols.stream()

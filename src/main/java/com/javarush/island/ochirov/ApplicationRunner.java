@@ -9,7 +9,7 @@ public class ApplicationRunner {
     private static final int ISLAND_WIDTH = 2;
     private static final int ISLAND_HEIGHT = 2;
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         Simulation simulation = new Simulation(ISLAND_WIDTH, ISLAND_HEIGHT);
         simulation.start();
 

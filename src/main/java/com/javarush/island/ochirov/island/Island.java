@@ -1,28 +1,21 @@
 package com.javarush.island.ochirov.island;
 
+import lombok.Getter;
+
 import java.util.Optional;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Island {
+    @Getter
     private final int width;
+    @Getter
     private final int height;
     private final Cell[][] cells;
-    private final Lock lock = new ReentrantLock();
 
     public Island(int width, int height) {
         this.width = width;
         this.height = height;
         this.cells = new Cell[width][height];
         initializeCells();
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
     }
 
     private void initializeCells() {

@@ -16,7 +16,7 @@ public class MovementService {
             var adjacentCells = adjacentCellService.getAdjacentCells(island, currentCell.getX(), currentCell.getY());
             var nextCell = adjacentCells.get(ThreadLocalRandom.current().nextInt(adjacentCells.size()));
             if (nextCell.addOrganism(animal)) {
-                String moveLog = animal.getConfig().getDisplaySymbol() + animal.getId() + " moved from " + currentCell.getX() + " " + currentCell.getY()
+                String moveLog = animal.getConfig().displaySymbol() + animal.getId() + " moved from " + currentCell.getX() + " " + currentCell.getY()
                         + " to " + nextCell.getX() + " " + nextCell.getY();
                 ConsoleOutputManager.printWithLock(moveLog);
                 currentCell.removeOrganism(animal);

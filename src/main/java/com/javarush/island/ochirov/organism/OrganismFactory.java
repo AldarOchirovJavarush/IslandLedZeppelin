@@ -52,8 +52,6 @@ public class OrganismFactory {
     }
 
     public static Set<String> getAllDisplaySymbols() {
-        return CONFIGS.values().stream()
-                .map(OrganismConfig::getDisplaySymbol)
-                .collect(Collectors.toSet());
+        return CONFIGS.values().stream().map(OrganismConfig::displaySymbol).collect(Collectors.toSet());
     }
 }

@@ -1,7 +1,7 @@
 package com.javarush.island.ochirov.island;
 
-
 import com.javarush.island.ochirov.organism.Organism;
+import lombok.Getter;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -9,7 +9,10 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Cell {
-    private final int x, y;
+    @Getter
+    private final int x;
+    @Getter
+    private final int y;
     private final Queue<Organism> organisms = new ConcurrentLinkedQueue<>();
     private final Lock lock = new ReentrantLock(true);
 
@@ -18,22 +21,14 @@ public class Cell {
         this.y = y;
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
     public boolean addOrganism(Organism organism) {
         var config = organism.getConfig();
 
         lock.lock();
         try {
-            long currentCount = organisms.stream().filter(o -> o.getConfig().getKey().equals(config.getKey())).count();
+            long currentCount = organisms.stream().filter(o -> o.getConfig().key().equals(config.key())).count();
 
-            if (currentCount >= config.getMaxPerCell()) {
+            if (currentCount >= config.maxPerCell()) {
                 return false;
             }
             return organisms.add(organism);
@@ -42,10 +37,10 @@ public class Cell {
         }
     }
 
-    public boolean removeOrganism(Organism organism) {
+    public void removeOrganism(Organism organism) {
         lock.lock();
         try {
-            return organisms.remove(organism);
+            organisms.remove(organism);
         } finally {
             lock.unlock();
         }
