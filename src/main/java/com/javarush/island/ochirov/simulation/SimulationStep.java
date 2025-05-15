@@ -22,21 +22,21 @@ public class SimulationStep {
         List<CompletableFuture<Void>> allActions = new ArrayList<>();
         for (var x = 0; x < island.getWidth(); x++) {
             for (var y = 0; y < island.getHeight(); y++) {
-                island.getCell(x, y).ifPresent(cell -> allActions.addAll(processCell(cell, island)));
+                island.getCell(x, y).ifPresent(cell -> allActions.addAll(processCell(cell)));
             }
         }
 
         return CompletableFuture.allOf(allActions.toArray(new CompletableFuture[0]));
     }
 
-    private List<CompletableFuture<Void>> processCell(Cell cell, Island island) {
+    private List<CompletableFuture<Void>> processCell(Cell cell) {
         List<CompletableFuture<Void>> cellActions = new ArrayList<>();
         List<Organism> organisms = new ArrayList<>(cell.getOrganisms());
 
         for (var organism : organisms) {
             if (organism instanceof Movable) {
                 cellActions.add(executeAction(() ->
-                        ((Movable) organism).move(island)));
+                        ((Movable) organism).move()));
             }
         }
 

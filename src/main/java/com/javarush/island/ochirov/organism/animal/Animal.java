@@ -1,6 +1,5 @@
 package com.javarush.island.ochirov.organism.animal;
 
-import com.javarush.island.ochirov.island.Island;
 import com.javarush.island.ochirov.organism.Organism;
 import com.javarush.island.ochirov.organism.OrganismConfig;
 import com.javarush.island.ochirov.organism.behavior.Movable;
@@ -18,10 +17,10 @@ public abstract class Animal extends Organism implements Movable {
     }
 
     @Override
-    public boolean move(Island island) {
+    public boolean move() {
         moveLock.lock();
         try {
-            return movementService.move(island, this);
+            return movementService.move(this);
         } finally {
             moveLock.unlock();
         }

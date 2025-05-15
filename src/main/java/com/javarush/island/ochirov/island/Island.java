@@ -24,6 +24,12 @@ public class Island {
                 cells[x][y] = new Cell(x, y);
             }
         }
+
+        for (var x = 0; x < width; x++) {
+            for (var y = 0; y < height; y++) {
+                cells[x][y].updateNeighbours(this::getCell);
+            }
+        }
     }
 
     public Optional<Cell> getCell(int x, int y) {
