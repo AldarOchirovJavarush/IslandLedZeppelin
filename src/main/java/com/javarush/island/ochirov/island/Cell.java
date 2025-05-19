@@ -27,8 +27,8 @@ public class Cell {
         int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 
         for (var dir : directions) {
-            int nx = x + dir[0];
-            int ny = y + dir[1];
+            var nx = x + dir[0];
+            var ny = y + dir[1];
             getCellFunc.apply(nx, ny).ifPresent(neighbours::add);
         }
     }
@@ -42,8 +42,7 @@ public class Cell {
 
         lock.lock();
         try {
-            long currentCount = organisms.stream().filter(o -> o.getConfig().key().equals(config.key())).count();
-
+            var currentCount = organisms.stream().filter(o -> o.getConfig().key().equals(config.key())).count();
             if (currentCount >= config.maxPerCell()) {
                 return false;
             }

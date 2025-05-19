@@ -1,5 +1,7 @@
 package com.javarush.island.ochirov.simulation;
 
+import com.javarush.island.ochirov.cli.ConsoleOutputManager;
+import com.javarush.island.ochirov.consts.StringErrors;
 import com.javarush.island.ochirov.island.Cell;
 import com.javarush.island.ochirov.island.Island;
 import com.javarush.island.ochirov.organism.Organism;
@@ -48,7 +50,7 @@ public class SimulationStep {
             try {
                 action.run();
             } catch (Exception e) {
-                System.err.println("Action failed: " + e.getMessage());
+                ConsoleOutputManager.printWithLock(String.format(StringErrors.ACTION_FAILED, e.getMessage()));
             }
         }, workers);
     }

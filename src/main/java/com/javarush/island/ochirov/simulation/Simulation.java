@@ -1,6 +1,7 @@
 package com.javarush.island.ochirov.simulation;
 
-import com.javarush.island.ochirov.ConsoleOutputManager;
+import com.javarush.island.ochirov.cli.ConsoleOutputManager;
+import com.javarush.island.ochirov.consts.StringErrors;
 import com.javarush.island.ochirov.island.Cell;
 import com.javarush.island.ochirov.island.Island;
 import com.javarush.island.ochirov.organism.OrganismPool;
@@ -39,18 +40,14 @@ public class Simulation {
     }
 
     private void initializeCell(Cell cell) {
-        try {
-            var wolf = pool.acquire("wolf");
-            var rabbit = pool.acquire("rabbit");
+        var wolf = pool.acquire("wolf");
+        var rabbit = pool.acquire("rabbit");
 
-            cell.addOrganism(wolf);
-            cell.addOrganism(rabbit);
+        cell.addOrganism(wolf);
+        cell.addOrganism(rabbit);
 
-            wolf.setCurrentCell(cell);
-            rabbit.setCurrentCell(cell);
-        } catch (Exception e) {
-            System.err.println("Cell initialization failed: " + e.getMessage());
-        }
+        wolf.setCurrentCell(cell);
+        rabbit.setCurrentCell(cell);
     }
 
     private void scheduleSimulationSteps() {
@@ -58,7 +55,7 @@ public class Simulation {
             try {
                 runSimulationCycle();
             } catch (Exception e) {
-                System.err.println("Simulation cycle failed: " + e.getMessage());
+                ConsoleOutputManager.printWithLock(String.format(StringErrors.SIMULATION_CYCLE_FAILED, e.getMessage()));
             }
         }, 0, 2, TimeUnit.SECONDS);
     }
@@ -66,18 +63,6 @@ public class Simulation {
     private void runSimulationCycle() throws ExecutionException, InterruptedException {
         simulationStep.processLifeCycle(island).get();
         ConsoleOutputManager.printIslandState(island);
-    }
-
-    private int getTotalOrganisms(Island island) {
-        var count = 0;
-        for (var x = 0; x < island.getWidth(); x++) {
-            for (var y = 0; y < island.getHeight(); y++) {
-                count += island.getCell(x, y)
-                        .map(cell -> cell.getOrganisms().size())
-                        .orElse(0);
-            }
-        }
-        return count;
     }
 
     public void stop() {
@@ -89,6 +74,7 @@ public class Simulation {
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+            ConsoleOutputManager.printWithLock(String.format(StringErrors.CURRENT_THREAD_INTERRUPTED, e.getMessage()));
         }
     }
 }

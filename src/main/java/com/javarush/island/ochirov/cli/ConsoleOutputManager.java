@@ -1,5 +1,6 @@
-package com.javarush.island.ochirov;
+package com.javarush.island.ochirov.cli;
 
+import com.javarush.island.ochirov.consts.StringMessages;
 import com.javarush.island.ochirov.island.Cell;
 import com.javarush.island.ochirov.island.Island;
 import com.javarush.island.ochirov.organism.Organism;
@@ -25,7 +26,7 @@ public class ConsoleOutputManager {
     public static void printIslandState(Island island) {
         consoleLock.lock();
         try {
-            System.out.println("\n=== ТЕКУЩЕЕ СОСТОЯНИЕ ОСТРОВА ===");
+            System.out.println(StringMessages.CURRENT_ISLAND_STATE);
             for (var y = 0; y < island.getHeight(); y++) {
                 var row = new StringBuilder();
                 for (var x = 0; x < island.getWidth(); x++) {

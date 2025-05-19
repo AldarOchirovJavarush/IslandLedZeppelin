@@ -1,6 +1,6 @@
 package com.javarush.island.ochirov.services;
 
-import com.javarush.island.ochirov.ConsoleOutputManager;
+import com.javarush.island.ochirov.cli.ConsoleOutputManager;
 import com.javarush.island.ochirov.organism.animal.Animal;
 
 import java.util.concurrent.ThreadLocalRandom;

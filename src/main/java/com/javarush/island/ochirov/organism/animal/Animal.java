@@ -9,7 +9,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class Animal extends Organism implements Movable {
-    private final Lock moveLock = new ReentrantLock();
+    private final Lock lock = new ReentrantLock();
     private final MovementService movementService = new MovementService();
 
     public Animal(OrganismConfig config) {
@@ -18,19 +18,19 @@ public abstract class Animal extends Organism implements Movable {
 
     @Override
     public boolean move() {
-        moveLock.lock();
+        lock.lock();
         try {
             return movementService.move(this);
         } finally {
-            moveLock.unlock();
+            lock.unlock();
         }
     }
 
     public void lock() {
-        moveLock.lock();
+        lock.lock();
     }
 
     public void unlock() {
-        moveLock.unlock();
+        lock.unlock();
     }
 }
