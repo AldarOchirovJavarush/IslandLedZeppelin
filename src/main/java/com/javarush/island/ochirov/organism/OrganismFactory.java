@@ -19,8 +19,8 @@ public class OrganismFactory {
     }
 
     private static void registerAnnotatedOrganisms() {
-        registerOrganism(Wolf.class, new OrganismConfig("wolf", "W", 3));
-        registerOrganism(Rabbit.class, new OrganismConfig("rabbit", "R", 3));
+        registerOrganism(Wolf.class, new OrganismConfig("wolf", "W", 3, 3));
+        registerOrganism(Rabbit.class, new OrganismConfig("rabbit", "R", 3, 3));
     }
 
     private static void registerOrganism(Class<? extends Organism> clazz, OrganismConfig config) {

@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 public class ConsoleOutputManager {
     private static final Lock consoleLock = new ReentrantLock();
+    private static final StringBuilder islandStateRow = new StringBuilder(512);
 
     public static void printWithLock(String message) {
         consoleLock.lock();
@@ -28,12 +29,12 @@ public class ConsoleOutputManager {
         try {
             System.out.println(StringMessages.CURRENT_ISLAND_STATE);
             for (var y = 0; y < island.getHeight(); y++) {
-                var row = new StringBuilder();
+                islandStateRow.setLength(0);
                 for (var x = 0; x < island.getWidth(); x++) {
                     var cell = island.getCell(x, y).orElseThrow();
-                    row.append(formatCell(cell));
+                    islandStateRow.append(formatCell(cell));
                 }
-                System.out.println(row);
+                System.out.println(islandStateRow);
             }
         } finally {
             consoleLock.unlock();
