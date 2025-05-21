@@ -69,4 +69,8 @@ public class Cell {
             lock.unlock();
         }
     }
+
+    public boolean contains(Organism organism) {
+        return organisms.contains(organism);
+    }
 }

@@ -17,7 +17,7 @@ public abstract class Organism {
     @Getter
     @Setter
     protected Cell currentCell;
-    protected final Lock lock = new ReentrantLock();
+    protected final Lock lock = new ReentrantLock(true);
 
     public Organism(OrganismConfig config) {
         id = ++COUNT;

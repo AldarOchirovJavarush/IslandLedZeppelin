@@ -26,12 +26,7 @@ public abstract class Animal extends Organism implements Movable, Eater {
     }
 
     private void action(AbstractOrganismService service) {
-        lock.lock();
-        try {
-            service.action(this);
-        } finally {
-            lock.unlock();
-        }
+        service.action(this);
     }
 
     @Override

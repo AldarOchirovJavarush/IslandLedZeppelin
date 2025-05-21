@@ -26,10 +26,10 @@ public class OrganismFactory {
     private static void registerAnnotatedOrganisms() {
         var probabilities = new HashMap<String, Integer>();
         probabilities.put("rabbit", 60);
-        registerOrganism(Wolf.class, new OrganismConfig("wolf", "W", 3, 3, 8, 50, 1, probabilities));
+        registerOrganism(Wolf.class, new OrganismConfig("wolf", "W", 2, 3, 8, 50, 1, probabilities));
         var probabilities2 = new HashMap<String, Integer>();
         probabilities2.put("wolf", 0);
-        registerOrganism(Rabbit.class, new OrganismConfig("rabbit", "R", 3, 3, 0.45, 2, 0.2, probabilities2));
+        registerOrganism(Rabbit.class, new OrganismConfig("rabbit", "R", 2, 3, 0.45, 2, 0.2, probabilities2));
     }
 
     private static void registerOrganism(Class<? extends Organism> clazz, OrganismConfig config) {
