@@ -2,35 +2,62 @@ package com.javarush.island.ochirov.organism.animal;
 
 import com.javarush.island.ochirov.organism.Organism;
 import com.javarush.island.ochirov.organism.OrganismConfig;
+import com.javarush.island.ochirov.organism.behavior.Eater;
 import com.javarush.island.ochirov.organism.behavior.Movable;
-import com.javarush.island.ochirov.services.MovementService;
+import com.javarush.island.ochirov.services.AbstractOrganismService;
+import lombok.Getter;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+public abstract class Animal extends Organism implements Movable, Eater {
+    @Getter
+    protected double currentSafety;
+    @Getter
+    protected double currentHunger;
+    private final AbstractOrganismService movementService;
+    private final AbstractOrganismService eatingService;
 
-public abstract class Animal extends Organism implements Movable {
-    private final Lock lock = new ReentrantLock();
-    private final MovementService movementService = new MovementService();
-
-    public Animal(OrganismConfig config) {
+    public Animal(OrganismConfig config,
+                  AbstractOrganismService movementService,
+                  AbstractOrganismService eatingService) {
         super(config);
+        currentSafety = config.satiety();
+        currentHunger = 0;
+        this.movementService = movementService;
+        this.eatingService = eatingService;
     }
 
-    @Override
-    public boolean move() {
+    private void action(AbstractOrganismService service) {
         lock.lock();
         try {
-            return movementService.move(this);
+            service.action(this);
         } finally {
             lock.unlock();
         }
     }
 
-    public void lock() {
-        lock.lock();
+    @Override
+    public void move() {
+        action(movementService);
     }
 
-    public void unlock() {
-        lock.unlock();
+    @Override
+    public void eat() {
+        action(eatingService);
+    }
+
+    @Override
+    public boolean isHungry() {
+        return currentSafety < config.satiety();
+    }
+
+    @Override
+    public void increaseCurrentSafety(double value) {
+        currentSafety += value;
+        currentHunger -= value;
+    }
+
+    @Override
+    public void decreaseCurrentSafety() {
+        currentSafety -= config.starvation();
+        currentHunger += config.starvation();
     }
 }

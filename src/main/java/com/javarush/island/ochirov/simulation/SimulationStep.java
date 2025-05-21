@@ -5,6 +5,7 @@ import com.javarush.island.ochirov.consts.StringErrors;
 import com.javarush.island.ochirov.island.Cell;
 import com.javarush.island.ochirov.island.Island;
 import com.javarush.island.ochirov.organism.Organism;
+import com.javarush.island.ochirov.organism.behavior.Eater;
 import com.javarush.island.ochirov.organism.behavior.Movable;
 
 import java.util.ArrayList;
@@ -15,34 +16,60 @@ import java.util.concurrent.Executors;
 
 public class SimulationStep {
     private final ExecutorService workers;
+    private final List<LifeCyclePhase> phases = List.of(
+            LifeCyclePhase.MOVEMENT,
+            LifeCyclePhase.EATING
+    );
 
     public SimulationStep(int threads) {
         this.workers = Executors.newFixedThreadPool(threads);
     }
 
     public CompletableFuture<Void> processLifeCycle(Island island) {
-        List<CompletableFuture<Void>> allActions = new ArrayList<>();
-        for (var x = 0; x < island.getWidth(); x++) {
-            for (var y = 0; y < island.getHeight(); y++) {
-                island.getCell(x, y).ifPresent(cell -> allActions.addAll(processCell(cell)));
+        CompletableFuture<Void> chain = CompletableFuture.completedFuture(null);
+
+        for (var phase : phases) {
+            chain = chain.thenCompose(v -> processPhase(island, phase));
+        }
+
+        return chain;
+    }
+
+    private CompletableFuture<Void> processPhase(Island island, LifeCyclePhase phase) {
+        List<CompletableFuture<Void>> phaseActions = new ArrayList<>();
+
+        for (int x = 0; x < island.getWidth(); x++) {
+            for (int y = 0; y < island.getHeight(); y++) {
+                island.getCell(x, y).ifPresent(cell ->
+                        phaseActions.addAll(processCell(cell, phase))
+                );
             }
         }
 
-        return CompletableFuture.allOf(allActions.toArray(new CompletableFuture[0]));
+        return CompletableFuture.allOf(phaseActions.toArray(new CompletableFuture[0]));
     }
 
-    private List<CompletableFuture<Void>> processCell(Cell cell) {
-        List<CompletableFuture<Void>> cellActions = new ArrayList<>();
+    private List<CompletableFuture<Void>> processCell(Cell cell, LifeCyclePhase phase) {
+        List<CompletableFuture<Void>> actions = new ArrayList<>();
         List<Organism> organisms = new ArrayList<>(cell.getOrganisms());
 
         for (var organism : organisms) {
-            if (organism instanceof Movable) {
-                cellActions.add(executeAction(() ->
-                        ((Movable) organism).move()));
+            switch (phase) {
+                case MOVEMENT:
+                    if (organism instanceof Movable movable) {
+                        actions.add(executeAction(movable::move));
+                    }
+                    break;
+
+                case EATING:
+                    if (organism instanceof Eater eater) {
+                        actions.add(executeAction(eater::eat));
+                        eater.decreaseCurrentSafety();
+                    }
+                    break;
             }
         }
-
-        return cellActions;
+        return actions;
     }
 
     private CompletableFuture<Void> executeAction(Runnable action) {

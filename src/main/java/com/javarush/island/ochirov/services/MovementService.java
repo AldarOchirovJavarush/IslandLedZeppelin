@@ -4,8 +4,9 @@ import com.javarush.island.ochirov.cli.ConsoleOutputManager;
 import com.javarush.island.ochirov.organism.animal.Animal;
 import com.javarush.island.ochirov.utils.Randomizer;
 
-public class MovementService {
-    public boolean move(Animal animal) {
+public class MovementService extends AbstractOrganismService {
+    @Override
+    public void action(Animal animal) {
         animal.lock();
         try {
             var movingCellsCount = Randomizer.getRandom(0, animal.getConfig().speed() + 1);
@@ -24,7 +25,5 @@ public class MovementService {
         } finally {
             animal.unlock();
         }
-
-        return true;
     }
 }

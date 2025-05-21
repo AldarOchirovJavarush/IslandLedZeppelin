@@ -2,9 +2,12 @@ package com.javarush.island.ochirov.organism.animal.carnivore;
 
 import com.javarush.island.ochirov.organism.OrganismConfig;
 import com.javarush.island.ochirov.organism.animal.Animal;
+import com.javarush.island.ochirov.services.AbstractOrganismService;
 
 public abstract class Carnivore extends Animal {
-    public Carnivore(OrganismConfig config) {
-        super(config);
+    public Carnivore(OrganismConfig config,
+                     AbstractOrganismService movementService,
+                     AbstractOrganismService eatingService) {
+        super(config, movementService, eatingService);
     }
 }

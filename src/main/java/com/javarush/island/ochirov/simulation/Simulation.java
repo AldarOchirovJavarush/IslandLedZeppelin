@@ -15,11 +15,9 @@ public class Simulation {
     private final Island island;
     private final ScheduledExecutorService scheduler;
     private final SimulationStep simulationStep;
-    private final OrganismPool pool;
 
     public Simulation(int width, int height) {
         this.island = new Island(width, height);
-        this.pool = new OrganismPool();
         this.scheduler = Executors.newSingleThreadScheduledExecutor();
         this.simulationStep = new SimulationStep(
                 Math.max(2, Runtime.getRuntime().availableProcessors() - 1)
@@ -40,8 +38,8 @@ public class Simulation {
     }
 
     private void initializeCell(Cell cell) {
-        var wolf = pool.acquire("wolf");
-        var rabbit = pool.acquire("rabbit");
+        var wolf = OrganismPool.acquire("wolf");
+        var rabbit = OrganismPool.acquire("rabbit");
 
         cell.addOrganism(wolf);
         cell.addOrganism(rabbit);
