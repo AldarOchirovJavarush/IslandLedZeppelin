@@ -17,16 +17,18 @@ public abstract class Animal extends Organism implements Movable, Eater {
 
     public Animal(OrganismConfig config,
                   AbstractOrganismService movementService,
-                  AbstractOrganismService eatingService) {
-        super(config);
-        currentSafety = config.satiety();
-        currentHunger = 0;
+                  AbstractOrganismService eatingService,
+                  AbstractOrganismService deathService) {
+        super(config, deathService);
         this.movementService = movementService;
         this.eatingService = eatingService;
+        init();
     }
 
-    private void action(AbstractOrganismService service) {
-        service.action(this);
+    public void init() {
+        super.init();
+        currentSafety = config.satiety();
+        currentHunger = 0;
     }
 
     @Override
@@ -37,11 +39,6 @@ public abstract class Animal extends Organism implements Movable, Eater {
     @Override
     public void eat() {
         action(eatingService);
-    }
-
-    @Override
-    public boolean isHungry() {
-        return currentSafety < config.satiety();
     }
 
     @Override

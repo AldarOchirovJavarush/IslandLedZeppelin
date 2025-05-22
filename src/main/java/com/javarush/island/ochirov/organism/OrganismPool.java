@@ -8,11 +8,15 @@ public class OrganismPool {
 
     public static Organism acquire(String key) {
         var org = POOL.poll();
-        return org != null ? org : OrganismFactory.createOrganism(key);
+        if (org != null) {
+            org.init();
+            return org;
+        }
+
+        return OrganismFactory.createOrganism(key);
     }
 
     public static void release(Organism organism) {
-        organism.reset();
         POOL.offer(organism);
     }
 }

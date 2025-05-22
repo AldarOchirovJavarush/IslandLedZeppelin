@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class EatingService extends AbstractOrganismService {
+public class EatingService extends AbstractAnimalService {
     @Override
-    public void action(Animal animal) {
+    public void animalAction(Animal animal) {
         var currentCell = animal.getCurrentCell();
         List<Organism> potentialPrey = new ArrayList<>(currentCell.getOrganisms());
         potentialPrey.sort(Comparator.comparingInt(Organism::getId));
@@ -27,7 +27,7 @@ public class EatingService extends AbstractOrganismService {
                 first.lock();
                 second.lock();
                 try {
-                    if (canEat(animal, prey) && currentCell.contains(prey)) {
+                    if (canEat(animal, prey) && currentCell.contains(prey) && prey.isAlive()) {
                         animal.increaseCurrentSafety(prey.getConfig().weight());
                         var eatLog = animal.getConfig().displaySymbol() + animal.getId() + " in "
                                 + currentCell.getX() + " " + currentCell.getY()

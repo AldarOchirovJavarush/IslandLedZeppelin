@@ -4,6 +4,7 @@ import com.javarush.island.ochirov.consts.StringErrors;
 import com.javarush.island.ochirov.organism.animal.carnivore.Wolf;
 import com.javarush.island.ochirov.organism.animal.herbivore.Rabbit;
 import com.javarush.island.ochirov.services.AbstractOrganismService;
+import com.javarush.island.ochirov.services.DeathService;
 import com.javarush.island.ochirov.services.EatingService;
 import com.javarush.island.ochirov.services.MovementService;
 
@@ -16,8 +17,15 @@ import java.util.stream.Collectors;
 public class OrganismFactory {
     private static final Map<String, Constructor<? extends Organism>> CONSTRUCTORS = new HashMap<>();
     private static final Map<String, OrganismConfig> CONFIGS = new HashMap<>();
-    private static final AbstractOrganismService movementService = new MovementService();
-    private static final AbstractOrganismService eatingService = new EatingService();
+    private static final AbstractOrganismService MOVEMENT_SERVICE = new MovementService();
+    private static final AbstractOrganismService EATING_SERVICE = new EatingService();
+    private static final AbstractOrganismService DEATH_SERVICE = new DeathService();
+    private static final Class<?>[] SERVICE_CONSTRUCTOR_PARAMS = {
+            OrganismConfig.class,
+            AbstractOrganismService.class,
+            AbstractOrganismService.class,
+            AbstractOrganismService.class
+    };
 
     static {
         registerAnnotatedOrganisms();
@@ -38,11 +46,7 @@ public class OrganismFactory {
             throw new IllegalArgumentException(String.format(StringErrors.REGISTERED_ORGANISM_REQUIRED_TEMPLATE, clazz));
         }
         try {
-            var constructor = clazz.getDeclaredConstructor(
-                    OrganismConfig.class,
-                    AbstractOrganismService.class,
-                    AbstractOrganismService.class
-            );
+            var constructor = clazz.getDeclaredConstructor(SERVICE_CONSTRUCTOR_PARAMS);
             var configKey = annotation.configKey();
 
             CONSTRUCTORS.put(configKey, constructor);
@@ -59,7 +63,7 @@ public class OrganismFactory {
         }
         try {
             var constructor = CONSTRUCTORS.get(type);
-            return constructor.newInstance(config, movementService, eatingService);
+            return constructor.newInstance(config, MOVEMENT_SERVICE, EATING_SERVICE, DEATH_SERVICE);
         } catch (Exception e) {
             throw new RuntimeException(String.format(StringErrors.ERROR_CREATING_ORGANISM, type));
         }

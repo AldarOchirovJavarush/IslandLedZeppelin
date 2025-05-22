@@ -7,7 +7,8 @@ import com.javarush.island.ochirov.services.AbstractOrganismService;
 public abstract class Carnivore extends Animal {
     public Carnivore(OrganismConfig config,
                      AbstractOrganismService movementService,
-                     AbstractOrganismService eatingService) {
-        super(config, movementService, eatingService);
+                     AbstractOrganismService eatingService,
+                     AbstractOrganismService deathService) {
+        super(config, movementService, eatingService, deathService);
     }
 }

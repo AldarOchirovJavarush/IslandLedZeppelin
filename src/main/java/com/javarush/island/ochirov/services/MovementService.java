@@ -5,9 +5,9 @@ import com.javarush.island.ochirov.island.Cell;
 import com.javarush.island.ochirov.organism.animal.Animal;
 import com.javarush.island.ochirov.utils.Randomizer;
 
-public class MovementService extends AbstractOrganismService {
+public class MovementService extends AbstractAnimalService {
     @Override
-    public void action(Animal animal) {
+    public void animalAction(Animal animal) {
         var movingCellsCount = Randomizer.getRandom(0, animal.getConfig().speed() + 1);
         if (movingCellsCount == 0) {
             return;

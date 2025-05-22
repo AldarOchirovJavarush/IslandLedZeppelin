@@ -8,7 +8,8 @@ import com.javarush.island.ochirov.services.AbstractOrganismService;
 public class Wolf extends Carnivore {
     public Wolf(OrganismConfig config,
                 AbstractOrganismService movementService,
-                AbstractOrganismService eatingService) {
-        super(config, movementService, eatingService);
+                AbstractOrganismService eatingService,
+                AbstractOrganismService deathService) {
+        super(config, movementService, eatingService, deathService);
     }
 }

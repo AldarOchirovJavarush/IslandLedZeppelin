@@ -18,7 +18,8 @@ public class SimulationStep {
     private final ExecutorService workers;
     private final List<LifeCyclePhase> phases = List.of(
             LifeCyclePhase.MOVEMENT,
-            LifeCyclePhase.EATING
+            LifeCyclePhase.EATING,
+            LifeCyclePhase.DEATH
     );
 
     public SimulationStep(int threads) {
@@ -67,6 +68,9 @@ public class SimulationStep {
                         eater.decreaseCurrentSafety();
                     }
                     break;
+
+                case DEATH:
+                    actions.add(executeAction(organism::die));
             }
         }
         return actions;
