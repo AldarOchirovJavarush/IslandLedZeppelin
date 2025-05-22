@@ -6,7 +6,6 @@ import com.javarush.island.ochirov.organism.OrganismPool;
 import com.javarush.island.ochirov.organism.animal.Animal;
 import com.javarush.island.ochirov.utils.Randomizer;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -14,12 +13,13 @@ public class EatingService extends AbstractAnimalService {
     @Override
     public void animalAction(Animal animal) {
         var currentCell = animal.getCurrentCell();
-        List<Organism> potentialPrey = new ArrayList<>(currentCell.getOrganisms());
-        potentialPrey.sort(Comparator.comparingInt(Organism::getId));
+        var predatorKey = animal.getConfig().key();
+        List<Organism> potentialPrey = currentCell.getOrganisms().stream()
+                .filter(prey -> !prey.getConfig().key().equals(predatorKey))
+                .sorted(Comparator.comparingInt(Organism::getId))
+                .toList();
 
         for (var prey : potentialPrey) {
-            if (prey == animal) continue;
-
             var first = animal.getId() < prey.getId() ? animal : prey;
             var second = animal.getId() < prey.getId() ? prey : animal;
 
