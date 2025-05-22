@@ -8,19 +8,24 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 public class Cell {
     @Getter
     private final int x;
     @Getter
     private final int y;
+    @Getter
+    private final long id;
+    @Getter
+    private final Lock lock = new ReentrantLock(true);
     private final List<Cell> neighbours = new ArrayList<>();
     private final Queue<Organism> organisms = new ConcurrentLinkedQueue<>();
-    private final Lock lock = new ReentrantLock(true);
 
     public Cell(int x, int y) {
         this.x = x;
         this.y = y;
+        id = ((long) x << 32) | (y & 0xFFFFFFFFL);
     }
 
     public void updateNeighbours(BiFunction<Integer, Integer, Optional<Cell>> getCellFunc) {
@@ -31,46 +36,62 @@ public class Cell {
             var ny = y + dir[1];
             getCellFunc.apply(nx, ny).ifPresent(neighbours::add);
         }
+
+        neighbours.sort(Comparator.comparingLong(c -> c.id));
     }
 
     public List<Cell> getNeighbours() {
         return Collections.unmodifiableList(neighbours);
     }
 
-    public boolean addOrganism(Organism organism) {
-        var config = organism.getConfig();
-
-        lock.lock();
+    private <T> T executeWithLock(Supplier<T> action) {
+        var lockedHere = false;
         try {
-            var currentCount = organisms.stream().filter(o -> o.getConfig().key().equals(config.key())).count();
-            if (currentCount >= config.maxPerCell()) {
-                return false;
+            if (!isLockedByCurrentThread()) {
+                lock.lock();
+                lockedHere = true;
             }
-            return organisms.add(organism);
+            return action.get();
         } finally {
-            lock.unlock();
+            if (lockedHere) {
+                lock.unlock();
+            }
         }
+    }
+
+    public void addOrganism(Organism organism) {
+        executeWithLock(() -> organisms.add(organism));
     }
 
     public void removeOrganism(Organism organism) {
-        lock.lock();
-        try {
-            organisms.remove(organism);
-        } finally {
-            lock.unlock();
-        }
+        executeWithLock(() -> organisms.remove(organism));
     }
 
-    public Queue<Organism> getOrganisms() {
-        lock.lock();
-        try {
-            return organisms;
-        } finally {
-            lock.unlock();
-        }
+    public List<Organism> getOrganisms() {
+        return executeWithLock(() -> new ArrayList<>(organisms));
     }
 
     public boolean contains(Organism organism) {
         return organisms.contains(organism);
+    }
+
+    public boolean isOrganismsOverflow(Organism organism) {
+        var config = organism.getConfig();
+        var currentCount = organisms.stream()
+                .filter(o -> o.getConfig().key().equals(config.key()))
+                .count();
+        return currentCount >= config.maxPerCell();
+    }
+
+    public void lock() {
+        lock.lock();
+    }
+
+    public void unlock() {
+        lock.unlock();
+    }
+
+    private boolean isLockedByCurrentThread() {
+        return ((ReentrantLock) lock).isHeldByCurrentThread();
     }
 }
