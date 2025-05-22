@@ -5,7 +5,7 @@ import com.javarush.island.ochirov.simulation.Simulation;
 import java.util.concurrent.TimeUnit;
 
 public class ApplicationRunner {
-    private static final int SIMULATION_DURATION_SECONDS = 30;
+    private static final int SIMULATION_DURATION_SECONDS = 60;
     private static final int ISLAND_WIDTH = 2;
     private static final int ISLAND_HEIGHT = 2;
 
