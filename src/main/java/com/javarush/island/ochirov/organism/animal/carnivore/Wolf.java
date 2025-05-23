@@ -9,7 +9,8 @@ public class Wolf extends Carnivore {
     public Wolf(OrganismConfig config,
                 AbstractOrganismService movementService,
                 AbstractOrganismService eatingService,
-                AbstractOrganismService deathService) {
-        super(config, movementService, eatingService, deathService);
+                AbstractOrganismService deathService,
+                AbstractOrganismService reproduceService) {
+        super(config, movementService, eatingService, deathService, reproduceService);
     }
 }

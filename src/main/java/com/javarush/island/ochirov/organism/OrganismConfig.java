@@ -10,5 +10,6 @@ public record OrganismConfig(
         double satiety,
         double weight,
         double starvation,
+        int reproduceProbability,
         Map<String, Integer> eatProbabilities) {
 }

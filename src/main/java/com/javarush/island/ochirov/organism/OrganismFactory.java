@@ -3,10 +3,7 @@ package com.javarush.island.ochirov.organism;
 import com.javarush.island.ochirov.consts.StringErrors;
 import com.javarush.island.ochirov.organism.animal.carnivore.Wolf;
 import com.javarush.island.ochirov.organism.animal.herbivore.Rabbit;
-import com.javarush.island.ochirov.services.AbstractOrganismService;
-import com.javarush.island.ochirov.services.DeathService;
-import com.javarush.island.ochirov.services.EatingService;
-import com.javarush.island.ochirov.services.MovementService;
+import com.javarush.island.ochirov.services.*;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
@@ -20,8 +17,10 @@ public class OrganismFactory {
     private static final AbstractOrganismService MOVEMENT_SERVICE = new MovementService();
     private static final AbstractOrganismService EATING_SERVICE = new EatingService();
     private static final AbstractOrganismService DEATH_SERVICE = new DeathService();
+    private static final AbstractOrganismService REPRODUCE_SERVICE = new ReproduceService();
     private static final Class<?>[] SERVICE_CONSTRUCTOR_PARAMS = {
             OrganismConfig.class,
+            AbstractOrganismService.class,
             AbstractOrganismService.class,
             AbstractOrganismService.class,
             AbstractOrganismService.class
@@ -34,10 +33,10 @@ public class OrganismFactory {
     private static void registerAnnotatedOrganisms() {
         var probabilities = new HashMap<String, Integer>();
         probabilities.put("rabbit", 60);
-        registerOrganism(Wolf.class, new OrganismConfig("wolf", "W", 2, 3, 8, 50, 1, probabilities));
+        registerOrganism(Wolf.class, new OrganismConfig("wolf", "W", 2, 3, 8, 50, 1, 50, probabilities));
         var probabilities2 = new HashMap<String, Integer>();
         probabilities2.put("wolf", 0);
-        registerOrganism(Rabbit.class, new OrganismConfig("rabbit", "R", 2, 3, 0.45, 2, 0.2, probabilities2));
+        registerOrganism(Rabbit.class, new OrganismConfig("rabbit", "R", 2, 3, 0.45, 2, 0.2, 70, probabilities2));
     }
 
     private static void registerOrganism(Class<? extends Organism> clazz, OrganismConfig config) {
@@ -63,7 +62,7 @@ public class OrganismFactory {
         }
         try {
             var constructor = CONSTRUCTORS.get(type);
-            return constructor.newInstance(config, MOVEMENT_SERVICE, EATING_SERVICE, DEATH_SERVICE);
+            return constructor.newInstance(config, MOVEMENT_SERVICE, EATING_SERVICE, DEATH_SERVICE, REPRODUCE_SERVICE);
         } catch (Exception e) {
             throw new RuntimeException(String.format(StringErrors.ERROR_CREATING_ORGANISM, type));
         }

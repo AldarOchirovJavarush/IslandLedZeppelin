@@ -15,6 +15,7 @@ public class DeathService extends AbstractOrganismService {
 
     private boolean shouldDie(Organism organism) {
         if (organism instanceof Animal animal) {
+            animal.decreaseCurrentSafety();
             return animal.getCurrentSafety() <= 0;
         }
 

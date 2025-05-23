@@ -5,8 +5,10 @@ import com.javarush.island.ochirov.consts.StringErrors;
 import com.javarush.island.ochirov.island.Cell;
 import com.javarush.island.ochirov.island.Island;
 import com.javarush.island.ochirov.organism.Organism;
+import com.javarush.island.ochirov.organism.behavior.Dying;
 import com.javarush.island.ochirov.organism.behavior.Eater;
 import com.javarush.island.ochirov.organism.behavior.Movable;
+import com.javarush.island.ochirov.organism.behavior.Reproducible;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,12 +67,18 @@ public class SimulationStep {
                 case EATING:
                     if (organism instanceof Eater eater) {
                         actions.add(executeAction(eater::eat));
-                        eater.decreaseCurrentSafety();
                     }
                     break;
 
                 case DEATH:
-                    actions.add(executeAction(organism::die));
+                    if (organism instanceof Dying dying) {
+                        actions.add(executeAction(dying::die));
+                    }
+
+                case REPRODUCE:
+                    if (organism instanceof Reproducible reproducible) {
+                        actions.add(executeAction(reproducible::reproduce));
+                    }
             }
         }
         return actions;

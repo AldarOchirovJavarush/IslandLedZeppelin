@@ -18,8 +18,9 @@ public abstract class Animal extends Organism implements Movable, Eater {
     public Animal(OrganismConfig config,
                   AbstractOrganismService movementService,
                   AbstractOrganismService eatingService,
-                  AbstractOrganismService deathService) {
-        super(config, deathService);
+                  AbstractOrganismService deathService,
+                  AbstractOrganismService reproduceService) {
+        super(config, deathService, reproduceService);
         this.movementService = movementService;
         this.eatingService = eatingService;
         init();

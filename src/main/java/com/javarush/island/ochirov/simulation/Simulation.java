@@ -55,7 +55,7 @@ public class Simulation {
             } catch (Exception e) {
                 ConsoleOutputManager.printWithLock(String.format(StringErrors.SIMULATION_CYCLE_FAILED, e.getMessage()));
             }
-        }, 0, 500, TimeUnit.MILLISECONDS);
+        }, 0, 2000, TimeUnit.MILLISECONDS);
     }
 
     private void runSimulationCycle() throws ExecutionException, InterruptedException {

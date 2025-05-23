@@ -8,7 +8,8 @@ public abstract class Carnivore extends Animal {
     public Carnivore(OrganismConfig config,
                      AbstractOrganismService movementService,
                      AbstractOrganismService eatingService,
-                     AbstractOrganismService deathService) {
-        super(config, movementService, eatingService, deathService);
+                     AbstractOrganismService deathService,
+                     AbstractOrganismService reproduceService) {
+        super(config, movementService, eatingService, deathService, reproduceService);
     }
 }
