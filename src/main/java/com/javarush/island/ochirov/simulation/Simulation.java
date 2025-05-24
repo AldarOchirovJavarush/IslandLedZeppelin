@@ -1,7 +1,5 @@
 package com.javarush.island.ochirov.simulation;
 
-import com.javarush.island.ochirov.organism.Organism;
-import com.javarush.island.ochirov.organism.utils.OrganismFactory;
 import com.javarush.island.ochirov.utils.view.ConsoleOutputManager;
 import com.javarush.island.ochirov.configs.records.SimulationConfig;
 import com.javarush.island.ochirov.consts.StringErrors;
