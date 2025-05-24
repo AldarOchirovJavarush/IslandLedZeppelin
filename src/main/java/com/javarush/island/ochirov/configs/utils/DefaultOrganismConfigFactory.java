@@ -1,9 +1,14 @@
-package com.javarush.island.ochirov.configs;
+package com.javarush.island.ochirov.configs.utils;
+
+import com.javarush.island.ochirov.configs.records.OrganismConfig;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class DefaultOrganismConfigFactory {
+    private DefaultOrganismConfigFactory () {
+    }
+
     private static final Map<String, OrganismConfig> DEFAULT_CONFIGS = Map.of(
             "wolf", new OrganismConfig(
                     "wolf",

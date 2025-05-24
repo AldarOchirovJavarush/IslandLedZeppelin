@@ -1,11 +1,11 @@
 package com.javarush.island.ochirov.simulation;
 
 import com.javarush.island.ochirov.utils.view.ConsoleOutputManager;
-import com.javarush.island.ochirov.configs.SimulationConfig;
+import com.javarush.island.ochirov.configs.records.SimulationConfig;
 import com.javarush.island.ochirov.consts.StringErrors;
 import com.javarush.island.ochirov.island.Cell;
 import com.javarush.island.ochirov.island.Island;
-import com.javarush.island.ochirov.organism.OrganismPool;
+import com.javarush.island.ochirov.organism.utils.OrganismPool;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -38,6 +38,7 @@ public class Simulation {
                 island.getCell(x, y).ifPresent(this::initializeCell);
             }
         }
+        ConsoleOutputManager.printIslandState(island);
     }
 
     private void initializeCell(Cell cell) {
@@ -75,7 +76,8 @@ public class Simulation {
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            ConsoleOutputManager.printWithLock(String.format(StringErrors.CURRENT_THREAD_INTERRUPTED, e.getMessage()));
+            ConsoleOutputManager.printWithLock(String.format(
+                    StringErrors.CURRENT_THREAD_INTERRUPTED, e.getMessage()));
         }
     }
 }

@@ -56,7 +56,7 @@ public class MovementService extends AbstractAnimalService {
     }
 
     private boolean validateMoveConditions(Animal animal, Cell currentCell, Cell nextCell) {
-        return currentCell.contains(animal) && !nextCell.isOrganismsOverflow(animal);
+        return currentCell.contains(animal) && nextCell.canAdd(animal);
     }
 
     private void executeMove(Animal animal, Cell from, Cell to) {

@@ -42,8 +42,8 @@ public class SimulationStep {
     private CompletableFuture<Void> processPhase(Island island, LifeCyclePhase phase) {
         List<CompletableFuture<Void>> phaseActions = new ArrayList<>();
 
-        for (int x = 0; x < island.getWidth(); x++) {
-            for (int y = 0; y < island.getHeight(); y++) {
+        for (var x = 0; x < island.getWidth(); x++) {
+            for (var y = 0; y < island.getHeight(); y++) {
                 island.getCell(x, y).ifPresent(cell ->
                         phaseActions.addAll(processCell(cell, phase))
                 );

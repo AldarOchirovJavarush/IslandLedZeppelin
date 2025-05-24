@@ -1,7 +1,7 @@
 package com.javarush.island.ochirov.organism.animal;
 
 import com.javarush.island.ochirov.organism.Organism;
-import com.javarush.island.ochirov.configs.OrganismConfig;
+import com.javarush.island.ochirov.configs.records.OrganismConfig;
 import com.javarush.island.ochirov.organism.behavior.Eater;
 import com.javarush.island.ochirov.organism.behavior.Movable;
 import com.javarush.island.ochirov.services.AbstractOrganismService;

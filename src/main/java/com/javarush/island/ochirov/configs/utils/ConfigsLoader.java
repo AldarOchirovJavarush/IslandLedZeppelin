@@ -1,7 +1,9 @@
-package com.javarush.island.ochirov.configs;
+package com.javarush.island.ochirov.configs.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.javarush.island.ochirov.configs.records.AppConfig;
+import com.javarush.island.ochirov.configs.records.SimulationConfig;
 import com.javarush.island.ochirov.utils.view.ConsoleOutputManager;
 import com.javarush.island.ochirov.consts.StringErrors;
 import java.util.concurrent.TimeUnit;
@@ -24,7 +26,8 @@ public class ConfigsLoader {
 
             return YAML_MAPPER.readValue(input, AppConfig.class);
         } catch (Exception e) {
-            ConsoleOutputManager.printWithLock(String.format(StringErrors.ERROR_YAML_LOADING, e.getMessage()));
+            ConsoleOutputManager.printWithLock(String.format(
+                    StringErrors.ERROR_YAML_LOADING, e.getMessage()));
             return createDefaultConfigs();
         }
     }

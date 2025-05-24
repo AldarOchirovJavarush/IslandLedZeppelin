@@ -1,4 +1,4 @@
-package com.javarush.island.ochirov.configs;
+package com.javarush.island.ochirov.configs.records;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

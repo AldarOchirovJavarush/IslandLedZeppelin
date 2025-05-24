@@ -3,7 +3,7 @@ package com.javarush.island.ochirov.services;
 import com.javarush.island.ochirov.consts.StringMessages;
 import com.javarush.island.ochirov.island.Cell;
 import com.javarush.island.ochirov.organism.Organism;
-import com.javarush.island.ochirov.organism.OrganismPool;
+import com.javarush.island.ochirov.organism.utils.OrganismPool;
 import com.javarush.island.ochirov.organism.animal.Animal;
 
 public class DeathService extends AbstractOrganismService {

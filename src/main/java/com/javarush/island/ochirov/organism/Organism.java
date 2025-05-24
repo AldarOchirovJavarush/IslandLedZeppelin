@@ -1,6 +1,6 @@
 package com.javarush.island.ochirov.organism;
 
-import com.javarush.island.ochirov.configs.OrganismConfig;
+import com.javarush.island.ochirov.configs.records.OrganismConfig;
 import com.javarush.island.ochirov.island.Cell;
 import com.javarush.island.ochirov.organism.behavior.Dying;
 import com.javarush.island.ochirov.organism.behavior.Reproducible;
@@ -35,7 +35,7 @@ public abstract class Organism implements Dying, Reproducible {
         init();
     }
 
-    protected void init() {
+    public void init() {
         id = ++COUNT;
         isAlive = true;
     }

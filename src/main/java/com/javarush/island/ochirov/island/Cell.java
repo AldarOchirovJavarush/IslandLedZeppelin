@@ -75,12 +75,12 @@ public class Cell {
         return organisms.contains(organism);
     }
 
-    public boolean isOrganismsOverflow(Organism organism) {
+    public boolean canAdd(Organism organism) {
         var config = organism.getConfig();
         var currentCount = organisms.stream()
                 .filter(o -> o.getConfig().key().equals(config.key()))
                 .count();
-        return currentCount >= config.maxPerCell();
+        return currentCount < config.maxPerCell();
     }
 
     public void lock() {

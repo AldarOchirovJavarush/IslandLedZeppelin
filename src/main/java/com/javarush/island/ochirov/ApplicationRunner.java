@@ -1,8 +1,8 @@
 package com.javarush.island.ochirov;
 
 import com.javarush.island.ochirov.utils.view.ConsoleOutputManager;
-import com.javarush.island.ochirov.configs.ConfigsLoader;
-import com.javarush.island.ochirov.organism.OrganismFactory;
+import com.javarush.island.ochirov.configs.utils.ConfigsLoader;
+import com.javarush.island.ochirov.organism.utils.OrganismFactory;
 import com.javarush.island.ochirov.services.*;
 import com.javarush.island.ochirov.simulation.Simulation;
 

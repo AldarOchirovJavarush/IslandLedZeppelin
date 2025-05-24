@@ -3,7 +3,7 @@ package com.javarush.island.ochirov.services;
 import com.javarush.island.ochirov.consts.StringMessages;
 import com.javarush.island.ochirov.island.Cell;
 import com.javarush.island.ochirov.organism.Organism;
-import com.javarush.island.ochirov.organism.OrganismPool;
+import com.javarush.island.ochirov.organism.utils.OrganismPool;
 import com.javarush.island.ochirov.organism.animal.Animal;
 import com.javarush.island.ochirov.utils.Randomizer;
 
@@ -24,26 +24,27 @@ public class EatingService extends AbstractAnimalService {
                 .sorted(Comparator.comparingInt(Organism::getId))
                 .toList();
 
-        for (var prey : potentialPrey) {
-            var first = animal.getId() < prey.getId() ? animal : prey;
-            var second = animal.getId() < prey.getId() ? prey : animal;
+        potentialPrey.forEach(t -> tryEat(animal, t, currentCell));
+    }
 
+    private void tryEat(Animal predator, Organism prey, Cell cell) {
+        var first = predator.getId() < prey.getId() ? predator : prey;
+        var second = predator.getId() < prey.getId() ? prey : predator;
+        try {
+            first.lock();
+            second.lock();
             try {
-                first.lock();
-                second.lock();
-                try {
-                    if (canEat(animal, prey) && currentCell.contains(prey) && prey.isAlive()) {
-                        animal.increaseCurrentSafety(prey.getConfig().weight());
-                        logEating(animal, prey, currentCell);
-                        currentCell.removeOrganism(prey);
-                        OrganismPool.release(prey);
-                    }
-                } finally {
-                    second.unlock();
+                if (canEat(predator, prey) && cell.contains(prey) && prey.isAlive()) {
+                    predator.increaseCurrentSafety(prey.getConfig().weight());
+                    logEating(predator, prey, cell);
+                    cell.removeOrganism(prey);
+                    OrganismPool.release(prey);
                 }
             } finally {
-                first.unlock();
+                second.unlock();
             }
+        } finally {
+            first.unlock();
         }
     }
 

@@ -4,7 +4,7 @@ import com.javarush.island.ochirov.consts.StringMessages;
 import com.javarush.island.ochirov.island.Cell;
 import com.javarush.island.ochirov.island.Island;
 import com.javarush.island.ochirov.organism.Organism;
-import com.javarush.island.ochirov.organism.OrganismFactory;
+import com.javarush.island.ochirov.organism.utils.OrganismFactory;
 
 import java.util.Collections;
 import java.util.List;
