@@ -1,6 +1,6 @@
 package com.javarush.island.ochirov.services;
 
-import com.javarush.island.ochirov.cli.ConsoleOutputManager;
+import com.javarush.island.ochirov.utils.view.ConsoleOutputManager;
 import com.javarush.island.ochirov.organism.Organism;
 
 public abstract class AbstractOrganismService {

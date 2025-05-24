@@ -1,7 +1,5 @@
 package com.javarush.island.ochirov.configs;
 
-import com.javarush.island.ochirov.organism.OrganismConfig;
-
 import java.util.HashMap;
 import java.util.Map;
 

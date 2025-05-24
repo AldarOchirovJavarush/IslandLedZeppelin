@@ -2,7 +2,7 @@ package com.javarush.island.ochirov.configs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.javarush.island.ochirov.cli.ConsoleOutputManager;
+import com.javarush.island.ochirov.utils.view.ConsoleOutputManager;
 import com.javarush.island.ochirov.consts.StringErrors;
 import java.util.concurrent.TimeUnit;
 

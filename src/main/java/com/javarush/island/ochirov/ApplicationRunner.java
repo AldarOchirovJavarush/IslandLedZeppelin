@@ -1,6 +1,6 @@
 package com.javarush.island.ochirov;
 
-import com.javarush.island.ochirov.cli.ConsoleOutputManager;
+import com.javarush.island.ochirov.utils.view.ConsoleOutputManager;
 import com.javarush.island.ochirov.configs.ConfigsLoader;
 import com.javarush.island.ochirov.organism.OrganismFactory;
 import com.javarush.island.ochirov.services.*;

@@ -1,6 +1,6 @@
 package com.javarush.island.ochirov.simulation;
 
-import com.javarush.island.ochirov.cli.ConsoleOutputManager;
+import com.javarush.island.ochirov.utils.view.ConsoleOutputManager;
 import com.javarush.island.ochirov.configs.SimulationConfig;
 import com.javarush.island.ochirov.consts.StringErrors;
 import com.javarush.island.ochirov.island.Cell;

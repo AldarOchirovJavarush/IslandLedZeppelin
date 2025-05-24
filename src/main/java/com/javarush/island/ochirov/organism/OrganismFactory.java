@@ -1,5 +1,6 @@
 package com.javarush.island.ochirov.organism;
 
+import com.javarush.island.ochirov.configs.OrganismConfig;
 import com.javarush.island.ochirov.consts.StringErrors;
 import com.javarush.island.ochirov.organism.animal.carnivore.Wolf;
 import com.javarush.island.ochirov.organism.animal.herbivore.Rabbit;

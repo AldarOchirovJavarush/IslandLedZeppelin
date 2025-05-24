@@ -1,6 +1,6 @@
 package com.javarush.island.ochirov.organism.animal.herbivore;
 
-import com.javarush.island.ochirov.organism.OrganismConfig;
+import com.javarush.island.ochirov.configs.OrganismConfig;
 import com.javarush.island.ochirov.organism.animal.Animal;
 import com.javarush.island.ochirov.services.AbstractOrganismService;
 

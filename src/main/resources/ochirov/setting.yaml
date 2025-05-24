@@ -1,11 +1,11 @@
 simulation:
   durationSeconds: 6000
-  width: 10
-  height: 10
+  width: 2
+  height: 2
   initDelay: 0
   period: 1000
   timeUnit: "MILLISECONDS"
-  detailedLog: false
+  detailedLog: true
 
 organisms:
   wolf:

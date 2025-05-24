@@ -1,6 +1,6 @@
 package com.javarush.island.ochirov.simulation;
 
-import com.javarush.island.ochirov.cli.ConsoleOutputManager;
+import com.javarush.island.ochirov.utils.view.ConsoleOutputManager;
 import com.javarush.island.ochirov.consts.StringErrors;
 import com.javarush.island.ochirov.island.Cell;
 import com.javarush.island.ochirov.island.Island;
@@ -21,7 +21,8 @@ public class SimulationStep {
     private final List<LifeCyclePhase> phases = List.of(
             LifeCyclePhase.MOVEMENT,
             LifeCyclePhase.EATING,
-            LifeCyclePhase.DEATH
+            LifeCyclePhase.DEATH,
+            LifeCyclePhase.REPRODUCE
     );
 
     public SimulationStep(int threads) {
@@ -74,11 +75,13 @@ public class SimulationStep {
                     if (organism instanceof Dying dying) {
                         actions.add(executeAction(dying::die));
                     }
+                    break;
 
                 case REPRODUCE:
                     if (organism instanceof Reproducible reproducible) {
                         actions.add(executeAction(reproducible::reproduce));
                     }
+                    break;
             }
         }
         return actions;

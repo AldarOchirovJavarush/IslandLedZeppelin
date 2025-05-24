@@ -1,5 +1,6 @@
 package com.javarush.island.ochirov.organism;
 
+import com.javarush.island.ochirov.configs.OrganismConfig;
 import com.javarush.island.ochirov.island.Cell;
 import com.javarush.island.ochirov.organism.behavior.Dying;
 import com.javarush.island.ochirov.organism.behavior.Reproducible;
