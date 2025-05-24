@@ -7,12 +7,13 @@ import com.javarush.island.ochirov.organism.RegisteredOrganism;
 import com.javarush.island.ochirov.organism.animal.carnivore.Wolf;
 import com.javarush.island.ochirov.organism.animal.herbivore.Rabbit;
 import com.javarush.island.ochirov.services.*;
+import com.javarush.island.ochirov.utils.Randomizer;
 
 import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class OrganismFactory {
     private static final Map<String, Constructor<? extends Organism>> CONSTRUCTORS = new HashMap<>();
@@ -72,6 +73,27 @@ public class OrganismFactory {
     }
 
     static Organism createOrganism(String type) {
+        return create(type);
+    }
+
+    static List<Organism> createRandomOrganisms(int percent) {
+        if (percent < 0 || percent > 100) {
+            throw new IllegalArgumentException(StringErrors.ILLEGAL_PERCENT);
+        }
+
+        return configs.entrySet().stream()
+                .flatMap(entry -> {
+                    var type = entry.getKey();
+                    var maxCount = entry.getValue().maxPerCell();
+                    var count = Randomizer.getRandom(0, Math.max(1, (percent * maxCount) / 100) + 1);
+
+                    return Stream.generate(() -> create(type))
+                            .limit(count);
+                })
+                .collect(Collectors.toList());
+    }
+
+    private static Organism create(String type) {
         var config = configs.get(type);
         if (config == null) {
             throw new IllegalArgumentException(String.format(StringErrors.UNKNOWN_ORGANISM_TYPE, type));

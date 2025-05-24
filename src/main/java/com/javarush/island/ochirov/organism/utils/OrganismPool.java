@@ -2,6 +2,7 @@ package com.javarush.island.ochirov.organism.utils;
 
 import com.javarush.island.ochirov.organism.Organism;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,6 +19,10 @@ public class OrganismPool {
         }
 
         return OrganismFactory.createOrganism(key);
+    }
+
+    public static List<Organism> acquire(int percent) {
+        return OrganismFactory.createRandomOrganisms(percent);
     }
 
     public static void release(Organism organism) {

@@ -45,8 +45,7 @@ public class SimulationStep {
         for (var x = 0; x < island.getWidth(); x++) {
             for (var y = 0; y < island.getHeight(); y++) {
                 island.getCell(x, y).ifPresent(cell ->
-                        phaseActions.addAll(processCell(cell, phase))
-                );
+                        phaseActions.addAll(processCell(cell, phase)));
             }
         }
 

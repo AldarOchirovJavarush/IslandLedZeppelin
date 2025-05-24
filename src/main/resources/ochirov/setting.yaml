@@ -1,10 +1,11 @@
 simulation:
   durationSeconds: 6000
-  width: 2
-  height: 2
+  width: 3
+  height: 3
   initDelay: 0
   period: 1000
   timeUnit: "MILLISECONDS"
+  startPercentOrganismsCount: 20
   detailedLog: true
 
 organisms:

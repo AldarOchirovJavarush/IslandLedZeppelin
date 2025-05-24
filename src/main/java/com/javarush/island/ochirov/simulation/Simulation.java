@@ -1,5 +1,7 @@
 package com.javarush.island.ochirov.simulation;
 
+import com.javarush.island.ochirov.organism.Organism;
+import com.javarush.island.ochirov.organism.utils.OrganismFactory;
 import com.javarush.island.ochirov.utils.view.ConsoleOutputManager;
 import com.javarush.island.ochirov.configs.records.SimulationConfig;
 import com.javarush.island.ochirov.consts.StringErrors;
@@ -42,14 +44,11 @@ public class Simulation {
     }
 
     private void initializeCell(Cell cell) {
-        var wolf = OrganismPool.acquire("wolf");
-        var rabbit = OrganismPool.acquire("rabbit");
-
-        cell.addOrganism(wolf);
-        cell.addOrganism(rabbit);
-
-        wolf.setCurrentCell(cell);
-        rabbit.setCurrentCell(cell);
+        var organisms = OrganismPool.acquire(simulationConfig.startPercentOrganismsCount());
+        for (var organism : organisms) {
+            cell.addOrganism(organism);
+            organism.setCurrentCell(cell);
+        }
     }
 
     private void scheduleSimulationSteps() {
