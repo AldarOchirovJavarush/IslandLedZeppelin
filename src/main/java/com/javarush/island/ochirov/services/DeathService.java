@@ -1,11 +1,16 @@
 package com.javarush.island.ochirov.services;
 
-import com.javarush.island.ochirov.cli.ConsoleOutputManager;
+import com.javarush.island.ochirov.consts.StringMessages;
+import com.javarush.island.ochirov.island.Cell;
 import com.javarush.island.ochirov.organism.Organism;
 import com.javarush.island.ochirov.organism.OrganismPool;
 import com.javarush.island.ochirov.organism.animal.Animal;
 
 public class DeathService extends AbstractOrganismService {
+    public DeathService(boolean shouldLog) {
+        super(shouldLog);
+    }
+
     @Override
     public void action(Organism organism) {
         if (shouldDie(organism)) {
@@ -28,17 +33,23 @@ public class DeathService extends AbstractOrganismService {
         try {
             if (cell.contains(organism)) {
                 cell.removeOrganism(organism);
-                ConsoleOutputManager.printWithLock(
-                        String.format("%s%d died at (%d,%d)",
-                                organism.getConfig().displaySymbol(),
-                                organism.getId(),
-                                cell.getX(), cell.getY())
-                );
+                logDeath(organism, cell);
                 OrganismPool.release(organism);
                 organism.setAlive(false);
             }
         } finally {
             cell.unlock();
         }
+    }
+
+    private void logDeath(Organism organism, Cell cell) {
+        var logMessage = String.format(
+                StringMessages.DEATH_MESSAGE,
+                organism.getConfig().displaySymbol(),
+                organism.getId(),
+                cell.getX(),
+                cell.getY()
+        );
+        log(logMessage);
     }
 }

@@ -1,15 +1,28 @@
 package com.javarush.island.ochirov;
 
+import com.javarush.island.ochirov.cli.ConsoleOutputManager;
 import com.javarush.island.ochirov.configs.ConfigsLoader;
 import com.javarush.island.ochirov.organism.OrganismFactory;
+import com.javarush.island.ochirov.services.*;
 import com.javarush.island.ochirov.simulation.Simulation;
 
 import java.util.concurrent.TimeUnit;
 
 public class ApplicationRunner {
+
     public static void main(String[] args) {
         var config = ConfigsLoader.loadConfig();
-        OrganismFactory.init(config.organisms());
+        ConsoleOutputManager.init(config.simulation().detailedLog());
+        AbstractOrganismService movementService = new MovementService(config.simulation().detailedLog());
+        AbstractOrganismService eatingService = new EatingService(config.simulation().detailedLog());
+        AbstractOrganismService deathService = new DeathService(config.simulation().detailedLog());
+        AbstractOrganismService reproduceService = new ReproduceService(config.simulation().detailedLog());
+        OrganismFactory.init(
+                config.organisms(),
+                movementService,
+                eatingService,
+                deathService,
+                reproduceService);
         var simulation = new Simulation(config.simulation());
         simulation.start();
 

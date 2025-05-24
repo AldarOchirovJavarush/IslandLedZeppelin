@@ -13,12 +13,12 @@ import java.util.stream.Collectors;
 
 public class OrganismFactory {
     private static final Map<String, Constructor<? extends Organism>> CONSTRUCTORS = new HashMap<>();
-    private static Map<String, OrganismConfig> CONFIGS;
-    private static final AbstractOrganismService MOVEMENT_SERVICE = new MovementService();
-    private static final AbstractOrganismService EATING_SERVICE = new EatingService();
-    private static final AbstractOrganismService DEATH_SERVICE = new DeathService();
-    private static final AbstractOrganismService REPRODUCE_SERVICE = new ReproduceService();
-    private static final Class<?>[] SERVICE_CONSTRUCTOR_PARAMS = {
+    private static Map<String, OrganismConfig> configs;
+    private static AbstractOrganismService movementService;
+    private static AbstractOrganismService eatingService;
+    private static AbstractOrganismService deathService;
+    private static AbstractOrganismService reproduceService;
+    private static final Class<?>[] serviceConstructorParams = {
             OrganismConfig.class,
             AbstractOrganismService.class,
             AbstractOrganismService.class,
@@ -29,8 +29,18 @@ public class OrganismFactory {
     private OrganismFactory() {
     }
 
-    public static void init(Map<String, OrganismConfig> configs) {
-        CONFIGS = configs;
+    public static void init(
+            Map<String, OrganismConfig> configs,
+            AbstractOrganismService movementService,
+            AbstractOrganismService eatingService,
+            AbstractOrganismService deathService,
+            AbstractOrganismService reproduceService) {
+        OrganismFactory.configs = configs;
+        OrganismFactory.movementService = movementService;
+        OrganismFactory.eatingService = eatingService;
+        OrganismFactory.deathService = deathService;
+        OrganismFactory.reproduceService = reproduceService;
+
         registerAnnotatedOrganisms();
     }
 
@@ -46,12 +56,12 @@ public class OrganismFactory {
         }
 
         var configKey = annotation.configKey();
-        if (!CONFIGS.containsKey(configKey)) {
+        if (!configs.containsKey(configKey)) {
             throw new IllegalStateException(String.format(StringErrors.NO_CONFIG_FOUND, configKey));
         }
 
         try {
-            var constructor = clazz.getDeclaredConstructor(SERVICE_CONSTRUCTOR_PARAMS);
+            var constructor = clazz.getDeclaredConstructor(serviceConstructorParams);
             CONSTRUCTORS.put(configKey, constructor);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(String.format(StringErrors.MISSING_ORGANISM_CONFIG_CONSTRUCTOR, clazz.getSimpleName()));
@@ -59,19 +69,24 @@ public class OrganismFactory {
     }
 
     static Organism createOrganism(String type) {
-        var config = CONFIGS.get(type);
+        var config = configs.get(type);
         if (config == null) {
             throw new IllegalArgumentException(String.format(StringErrors.UNKNOWN_ORGANISM_TYPE, type));
         }
         try {
             var constructor = CONSTRUCTORS.get(type);
-            return constructor.newInstance(config, MOVEMENT_SERVICE, EATING_SERVICE, DEATH_SERVICE, REPRODUCE_SERVICE);
+            return constructor.newInstance(
+                    config,
+                    movementService,
+                    eatingService,
+                    deathService,
+                    reproduceService);
         } catch (Exception e) {
             throw new RuntimeException(String.format(StringErrors.ERROR_CREATING_ORGANISM, type));
         }
     }
 
     public static Set<String> getAllDisplaySymbols() {
-        return CONFIGS.values().stream().map(OrganismConfig::displaySymbol).collect(Collectors.toSet());
+        return configs.values().stream().map(OrganismConfig::displaySymbol).collect(Collectors.toSet());
     }
 }

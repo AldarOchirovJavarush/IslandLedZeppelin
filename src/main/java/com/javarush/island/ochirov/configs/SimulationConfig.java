@@ -10,5 +10,6 @@ public record SimulationConfig(
         @JsonProperty("height") int height,
         @JsonProperty("initDelay") long initDelay,
         @JsonProperty("period") long period,
-        @JsonProperty("timeUnit") TimeUnit timeUnit) {
+        @JsonProperty("timeUnit") TimeUnit timeUnit,
+        @JsonProperty("detailedLog") boolean detailedLog) {
 }

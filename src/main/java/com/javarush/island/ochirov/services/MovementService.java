@@ -1,11 +1,15 @@
 package com.javarush.island.ochirov.services;
 
-import com.javarush.island.ochirov.cli.ConsoleOutputManager;
+import com.javarush.island.ochirov.consts.StringMessages;
 import com.javarush.island.ochirov.island.Cell;
 import com.javarush.island.ochirov.organism.animal.Animal;
 import com.javarush.island.ochirov.utils.Randomizer;
 
 public class MovementService extends AbstractAnimalService {
+    public MovementService(boolean shouldLog) {
+        super(shouldLog);
+    }
+
     @Override
     public void animalAction(Animal animal) {
         var movingCellsCount = Randomizer.getRandom(0, animal.getConfig().speed() + 1);
@@ -39,6 +43,7 @@ public class MovementService extends AbstractAnimalService {
             try {
                 if (validateMoveConditions(animal, currentCell, nextCell)) {
                     executeMove(animal, currentCell, nextCell);
+                    logMovement(animal, currentCell, nextCell);
                     return true;
                 }
             } finally {
@@ -58,13 +63,17 @@ public class MovementService extends AbstractAnimalService {
         to.addOrganism(animal);
         from.removeOrganism(animal);
         animal.setCurrentCell(to);
+    }
 
-        var log = String.format("%s%d moved from (%d,%d) to (%d,%d)",
+    private void logMovement(Animal animal, Cell from, Cell to) {
+        var logMessage = String.format(
+                StringMessages.MOVEMENT_MESSAGE,
                 animal.getConfig().displaySymbol(),
                 animal.getId(),
-                from.getX(), from.getY(),
-                to.getX(), to.getY());
-
-        ConsoleOutputManager.printWithLock(log);
+                from.getX(),
+                from.getY(),
+                to.getX(),
+                to.getY());
+        log(logMessage);
     }
 }

@@ -14,6 +14,11 @@ import java.util.stream.Collectors;
 public class ConsoleOutputManager {
     private static final Lock consoleLock = new ReentrantLock();
     private static final StringBuilder islandStateRow = new StringBuilder(512);
+    private static boolean detailedLog;
+
+    public static void init(boolean detailedLog) {
+        ConsoleOutputManager.detailedLog = detailedLog;
+    }
 
     public static void printWithLock(String message) {
         consoleLock.lock();
@@ -51,13 +56,17 @@ public class ConsoleOutputManager {
         return allSymbols.stream()
                 .map(symbol -> {
                     var ids = organismsBySymbol.getOrDefault(symbol, Collections.emptyList());
-                    return ids.isEmpty()
-                            ? String.format("%s:0", symbol)
-                            : String.format("%s:%d(%s)",
-                            symbol,
-                            ids.size(),
-                            ids.stream().map(String::valueOf).collect(Collectors.joining(","))
-                    );
+                    if (detailedLog) {
+                        return ids.isEmpty()
+                                ? String.format("%s:0", symbol)
+                                : String.format("%s:%d(%s)",
+                                symbol,
+                                ids.size(),
+                                ids.stream().map(String::valueOf).collect(Collectors.joining(","))
+                        );
+                    } else {
+                        return String.format("%s:%d", symbol, ids.size());
+                    }
                 })
                 .collect(Collectors.joining(" ", "[", "]"));
     }

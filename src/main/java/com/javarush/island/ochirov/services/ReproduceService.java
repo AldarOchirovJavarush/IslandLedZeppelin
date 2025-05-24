@@ -1,12 +1,16 @@
 package com.javarush.island.ochirov.services;
 
-import com.javarush.island.ochirov.cli.ConsoleOutputManager;
+import com.javarush.island.ochirov.consts.StringMessages;
 import com.javarush.island.ochirov.island.Cell;
 import com.javarush.island.ochirov.organism.Organism;
 import com.javarush.island.ochirov.organism.OrganismPool;
 import com.javarush.island.ochirov.utils.Randomizer;
 
 public class ReproduceService extends AbstractOrganismService {
+    public ReproduceService(boolean shouldLog) {
+        super(shouldLog);
+    }
+
     @Override
     public void action(Organism organism) {
         var cell = organism.getCurrentCell();
@@ -34,10 +38,15 @@ public class ReproduceService extends AbstractOrganismService {
     }
 
     private void logReproduction(Organism parent, Organism offspring, Cell cell) {
-        String log = String.format("%s%d budded at (%d,%d). New: %s%d",
-                parent.getConfig().displaySymbol(), parent.getId(),
-                cell.getX(), cell.getY(),
-                offspring.getConfig().displaySymbol(), offspring.getId());
-        ConsoleOutputManager.printWithLock(log);
+        var logMessage = String.format(
+                StringMessages.REPRODUCE_MESSAGE,
+                parent.getConfig().displaySymbol(),
+                parent.getId(),
+                offspring.getConfig().displaySymbol(),
+                offspring.getId(),
+                cell.getX(),
+                cell.getY()
+        );
+        log(logMessage);
     }
 }
