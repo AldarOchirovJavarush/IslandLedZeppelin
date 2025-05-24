@@ -6,6 +6,8 @@ import com.javarush.island.ochirov.organism.Organism;
 import com.javarush.island.ochirov.organism.RegisteredOrganism;
 import com.javarush.island.ochirov.organism.animal.carnivore.Wolf;
 import com.javarush.island.ochirov.organism.animal.herbivore.Rabbit;
+import com.javarush.island.ochirov.organism.plant.Grass;
+import com.javarush.island.ochirov.organism.plant.Plant;
 import com.javarush.island.ochirov.services.*;
 import com.javarush.island.ochirov.utils.Randomizer;
 
@@ -21,10 +23,15 @@ public class OrganismFactory {
     private static AbstractOrganismService eatingService;
     private static AbstractOrganismService deathService;
     private static AbstractOrganismService reproduceService;
-    private static final Class<?>[] serviceConstructorParams = {
+    private static final Class<?>[] animalServiceConstructorParams = {
             OrganismConfig.class,
             AbstractOrganismService.class,
             AbstractOrganismService.class,
+            AbstractOrganismService.class,
+            AbstractOrganismService.class
+    };
+    private static final Class<?>[] plantServiceConstructorParams = {
+            OrganismConfig.class,
             AbstractOrganismService.class,
             AbstractOrganismService.class
     };
@@ -50,21 +57,26 @@ public class OrganismFactory {
     private static void registerAnnotatedOrganisms() {
         registerOrganism(Wolf.class);
         registerOrganism(Rabbit.class);
+        registerOrganism(Grass.class);
     }
 
     private static void registerOrganism(Class<? extends Organism> clazz) {
         var annotation = clazz.getAnnotation(RegisteredOrganism.class);
         if (annotation == null) {
-            throw new IllegalArgumentException(String.format(StringErrors.REGISTERED_ORGANISM_REQUIRED_TEMPLATE, clazz));
+            throw new IllegalArgumentException(String.format(
+                    StringErrors.REGISTERED_ORGANISM_REQUIRED_TEMPLATE, clazz));
         }
 
         var configKey = annotation.configKey();
         if (!configs.containsKey(configKey)) {
-            throw new IllegalStateException(String.format(StringErrors.NO_CONFIG_FOUND, configKey));
+            throw new IllegalStateException(String.format(
+                    StringErrors.NO_CONFIG_FOUND, configKey));
         }
 
         try {
-            var constructor = clazz.getDeclaredConstructor(serviceConstructorParams);
+            var serviceParams = isPlant(clazz)
+                    ? plantServiceConstructorParams : animalServiceConstructorParams;
+            var constructor = clazz.getDeclaredConstructor(serviceParams);
             CONSTRUCTORS.put(configKey, constructor);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(String.format(StringErrors.MISSING_ORGANISM_CONFIG_CONSTRUCTOR, clazz.getSimpleName()));
@@ -99,7 +111,12 @@ public class OrganismFactory {
         }
         try {
             var constructor = CONSTRUCTORS.get(type);
-            return constructor.newInstance(
+            return isPlant(constructor.getDeclaringClass())
+                    ? constructor.newInstance(
+                    config,
+                    deathService,
+                    reproduceService)
+                    : constructor.newInstance(
                     config,
                     movementService,
                     eatingService,
@@ -108,6 +125,10 @@ public class OrganismFactory {
         } catch (Exception e) {
             throw new RuntimeException(String.format(StringErrors.ERROR_CREATING_ORGANISM, type));
         }
+    }
+
+    private static boolean isPlant(Class<? extends Organism> clazz) {
+        return Plant.class.isAssignableFrom(clazz);
     }
 
     public static Set<String> getAllDisplaySymbols() {

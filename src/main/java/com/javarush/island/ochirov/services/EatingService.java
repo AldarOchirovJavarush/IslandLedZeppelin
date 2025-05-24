@@ -24,7 +24,7 @@ public class EatingService extends AbstractAnimalService {
                 .sorted(Comparator.comparingInt(Organism::getId))
                 .toList();
 
-        potentialPrey.forEach(t -> tryEat(animal, t, currentCell));
+        potentialPrey.forEach(prey -> tryEat(animal, prey, currentCell));
     }
 
     private void tryEat(Animal predator, Organism prey, Cell cell) {

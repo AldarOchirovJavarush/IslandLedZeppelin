@@ -1,18 +1,18 @@
 simulation:
   durationSeconds: 6000
-  width: 3
-  height: 3
+  width: 2
+  height: 2
   initDelay: 0
   period: 1000
   timeUnit: "MILLISECONDS"
   startPercentOrganismsCount: 20
-  detailedLog: true
+  detailedLog: false
 
 organisms:
   wolf:
     key: "wolf"
     displaySymbol: "W"
-    maxPerCell: 5
+    maxPerCell: 30
     speed: 3
     satiety: 8.0
     weight: 50.0
@@ -23,11 +23,22 @@ organisms:
   rabbit:
     key: "rabbit"
     displaySymbol: "R"
-    maxPerCell: 10
+    maxPerCell: 150
     speed: 2
     satiety: 0.45
     weight: 2.0
-    starvation: 0.2
+    starvation: 0.1
+    reproduceProbability: 100
+    eatProbabilities:
+      grass: 100
+  grass:
+    key: "grass"
+    displaySymbol: "G"
+    maxPerCell: 200
+    speed: 0
+    satiety: 0
+    weight: 1
+    starvation: 0
     reproduceProbability: 100
     eatProbabilities:
       wolf: 0
