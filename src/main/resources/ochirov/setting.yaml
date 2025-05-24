@@ -1,0 +1,31 @@
+simulation:
+  durationSeconds: 600
+  width: 2
+  height: 2
+  initDelay: 0
+  period: 3000
+  timeUnit: "MILLISECONDS"
+
+organisms:
+  wolf:
+    key: "wolf"
+    displaySymbol: "W"
+    maxPerCell: 5
+    speed: 3
+    satiety: 8.0
+    weight: 50.0
+    starvation: 1.0
+    reproduceProbability: 30
+    eatProbabilities:
+      rabbit: 60
+  rabbit:
+    key: "rabbit"
+    displaySymbol: "R"
+    maxPerCell: 10
+    speed: 2
+    satiety: 0.45
+    weight: 2.0
+    starvation: 0.2
+    reproduceProbability: 100
+    eatProbabilities:
+      wolf: 0

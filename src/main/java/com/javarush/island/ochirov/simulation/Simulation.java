@@ -1,6 +1,7 @@
 package com.javarush.island.ochirov.simulation;
 
 import com.javarush.island.ochirov.cli.ConsoleOutputManager;
+import com.javarush.island.ochirov.configs.SimulationConfig;
 import com.javarush.island.ochirov.consts.StringErrors;
 import com.javarush.island.ochirov.island.Cell;
 import com.javarush.island.ochirov.island.Island;
@@ -12,12 +13,14 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Simulation {
+    private final SimulationConfig simulationConfig;
     private final Island island;
     private final ScheduledExecutorService scheduler;
     private final SimulationStep simulationStep;
 
-    public Simulation(int width, int height) {
-        this.island = new Island(width, height);
+    public Simulation(SimulationConfig simulationConfig) {
+        this.simulationConfig = simulationConfig;
+        this.island = new Island(simulationConfig.width(), simulationConfig.height());
         this.scheduler = Executors.newSingleThreadScheduledExecutor();
         this.simulationStep = new SimulationStep(
                 Math.max(2, Runtime.getRuntime().availableProcessors() - 1)
@@ -55,7 +58,7 @@ public class Simulation {
             } catch (Exception e) {
                 ConsoleOutputManager.printWithLock(String.format(StringErrors.SIMULATION_CYCLE_FAILED, e.getMessage()));
             }
-        }, 0, 2000, TimeUnit.MILLISECONDS);
+        }, simulationConfig.initDelay(), simulationConfig.period(), simulationConfig.timeUnit());
     }
 
     private void runSimulationCycle() throws ExecutionException, InterruptedException {

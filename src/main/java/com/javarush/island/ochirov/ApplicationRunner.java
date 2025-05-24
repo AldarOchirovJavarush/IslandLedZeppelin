@@ -1,22 +1,22 @@
 package com.javarush.island.ochirov;
 
+import com.javarush.island.ochirov.configs.ConfigsLoader;
+import com.javarush.island.ochirov.organism.OrganismFactory;
 import com.javarush.island.ochirov.simulation.Simulation;
 
 import java.util.concurrent.TimeUnit;
 
 public class ApplicationRunner {
-    private static final int SIMULATION_DURATION_SECONDS = 600;
-    private static final int ISLAND_WIDTH = 2;
-    private static final int ISLAND_HEIGHT = 2;
-
     public static void main(String[] args) {
-        var simulation = new Simulation(ISLAND_WIDTH, ISLAND_HEIGHT);
+        var config = ConfigsLoader.loadConfig();
+        OrganismFactory.init(config.organisms());
+        var simulation = new Simulation(config.simulation());
         simulation.start();
 
         Runtime.getRuntime().addShutdownHook(new Thread(simulation::stop));
 
         try {
-            TimeUnit.SECONDS.sleep(SIMULATION_DURATION_SECONDS);
+            TimeUnit.SECONDS.sleep(config.simulation().durationSeconds());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         } finally {

@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class OrganismFactory {
     private static final Map<String, Constructor<? extends Organism>> CONSTRUCTORS = new HashMap<>();
-    private static final Map<String, OrganismConfig> CONFIGS = new HashMap<>();
+    private static Map<String, OrganismConfig> CONFIGS;
     private static final AbstractOrganismService MOVEMENT_SERVICE = new MovementService();
     private static final AbstractOrganismService EATING_SERVICE = new EatingService();
     private static final AbstractOrganismService DEATH_SERVICE = new DeathService();
@@ -26,30 +26,33 @@ public class OrganismFactory {
             AbstractOrganismService.class
     };
 
-    static {
+    private OrganismFactory() {
+    }
+
+    public static void init(Map<String, OrganismConfig> configs) {
+        CONFIGS = configs;
         registerAnnotatedOrganisms();
     }
 
     private static void registerAnnotatedOrganisms() {
-        var probabilities = new HashMap<String, Integer>();
-        probabilities.put("rabbit", 60);
-        registerOrganism(Wolf.class, new OrganismConfig("wolf", "W", 2, 3, 8, 50, 1, 50, probabilities));
-        var probabilities2 = new HashMap<String, Integer>();
-        probabilities2.put("wolf", 0);
-        registerOrganism(Rabbit.class, new OrganismConfig("rabbit", "R", 2, 3, 0.45, 2, 0.2, 70, probabilities2));
+        registerOrganism(Wolf.class);
+        registerOrganism(Rabbit.class);
     }
 
-    private static void registerOrganism(Class<? extends Organism> clazz, OrganismConfig config) {
+    private static void registerOrganism(Class<? extends Organism> clazz) {
         var annotation = clazz.getAnnotation(RegisteredOrganism.class);
         if (annotation == null) {
             throw new IllegalArgumentException(String.format(StringErrors.REGISTERED_ORGANISM_REQUIRED_TEMPLATE, clazz));
         }
+
+        var configKey = annotation.configKey();
+        if (!CONFIGS.containsKey(configKey)) {
+            throw new IllegalStateException(String.format(StringErrors.NO_CONFIG_FOUND, configKey));
+        }
+
         try {
             var constructor = clazz.getDeclaredConstructor(SERVICE_CONSTRUCTOR_PARAMS);
-            var configKey = annotation.configKey();
-
             CONSTRUCTORS.put(configKey, constructor);
-            CONFIGS.put(configKey, config);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(String.format(StringErrors.MISSING_ORGANISM_CONFIG_CONSTRUCTOR, clazz.getSimpleName()));
         }

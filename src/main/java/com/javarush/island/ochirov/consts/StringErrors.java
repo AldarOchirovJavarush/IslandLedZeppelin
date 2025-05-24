@@ -13,4 +13,7 @@ public final class StringErrors implements StringConstants {
     public final static String CURRENT_THREAD_INTERRUPTED = "Current thread interrupted: %s";
 
     public final static String ACTION_FAILED = "Action failed: %s";
+
+    public final static String ERROR_YAML_LOADING = "Error loading YAML config: %s";
+    public final static String NO_CONFIG_FOUND = "No config found for: %s";
 }
