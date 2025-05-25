@@ -7,6 +7,8 @@ simulation:
   timeUnit: "MILLISECONDS"
   startPercentOrganismsCount: 20
   detailedLog: false
+  consoleViewIslandHeight: 15
+  consoleViewIslandWidth: 10
 
 organisms:
   wolf:

@@ -48,7 +48,9 @@ public class ConfigsLoader {
                 2000L,
                 TimeUnit.MILLISECONDS,
                 20,
-                false
+                false,
+                15,
+                10
         );
     }
 }

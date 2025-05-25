@@ -16,12 +16,18 @@ public class ConsoleOutputManager {
     private static final Lock LOCK = new ReentrantLock();
     private static final StringBuilder ISLAND_STATE_ROW = new StringBuilder(512);
     private static boolean detailedLog;
+    private static int consoleViewIslandHeight;
+    private static int consoleViewIslandWidth;
 
     private ConsoleOutputManager() {
     }
 
-    public static void init(boolean detailedLog) {
+    public static void init(boolean detailedLog,
+                            int consoleViewIslandHeight,
+                            int consoleViewIslandWidth) {
         ConsoleOutputManager.detailedLog = detailedLog;
+        ConsoleOutputManager.consoleViewIslandHeight = consoleViewIslandHeight;
+        ConsoleOutputManager.consoleViewIslandWidth = consoleViewIslandWidth;
     }
 
     public static void printWithLock(String message) {
@@ -34,12 +40,14 @@ public class ConsoleOutputManager {
     }
 
     public static void printIslandState(Island island) {
+        var height = Math.min(consoleViewIslandHeight, island.getHeight());
+        var width = Math.min(consoleViewIslandWidth, island.getWidth());
         LOCK.lock();
         try {
             System.out.println(StringMessages.CURRENT_ISLAND_STATE);
-            for (var y = 0; y < island.getHeight(); y++) {
+            for (var y = 0; y < height; y++) {
                 ISLAND_STATE_ROW.setLength(0);
-                for (var x = 0; x < island.getWidth(); x++) {
+                for (var x = 0; x < width; x++) {
                     var cell = island.getCell(x, y).orElseThrow();
                     ISLAND_STATE_ROW.append(formatCell(cell));
                 }

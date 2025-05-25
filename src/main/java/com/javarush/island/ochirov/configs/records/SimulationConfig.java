@@ -12,5 +12,7 @@ public record SimulationConfig(
         @JsonProperty("period") long period,
         @JsonProperty("timeUnit") TimeUnit timeUnit,
         @JsonProperty("startPercentOrganismsCount") int startPercentOrganismsCount,
-        @JsonProperty("detailedLog") boolean detailedLog) {
+        @JsonProperty("detailedLog") boolean detailedLog,
+        @JsonProperty("consoleViewIslandHeight") int consoleViewIslandHeight,
+        @JsonProperty("consoleViewIslandWidth") int consoleViewIslandWidth) {
 }
