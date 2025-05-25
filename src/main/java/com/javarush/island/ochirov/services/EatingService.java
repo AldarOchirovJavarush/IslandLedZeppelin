@@ -53,7 +53,7 @@ public class EatingService extends AbstractAnimalService {
         var animalEatProbabilities = animal.getConfig().eatProbabilities();
 
         return animalEatProbabilities.containsKey(preyKey)
-                && animal.getCurrentHunger() > prey.getConfig().weight()
+                && animal.getCurrentHunger() > 0
                 && Randomizer.toss(animalEatProbabilities.get(preyKey));
     }
 
