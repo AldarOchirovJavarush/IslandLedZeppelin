@@ -1,10 +1,11 @@
 package com.javarush.island.ochirov.organism.animal.herbivore;
 
 import com.javarush.island.ochirov.configs.records.OrganismConfig;
+import com.javarush.island.ochirov.configs.utils.DefaultOrganismConfigFactory;
 import com.javarush.island.ochirov.organism.RegisteredOrganism;
 import com.javarush.island.ochirov.services.AbstractOrganismService;
 
-@RegisteredOrganism(configKey = "rabbit")
+@RegisteredOrganism(DefaultOrganismConfigFactory.OrganismType.RABBIT)
 public class Rabbit extends Herbivore {
     public Rabbit(OrganismConfig config,
                   AbstractOrganismService movementService,

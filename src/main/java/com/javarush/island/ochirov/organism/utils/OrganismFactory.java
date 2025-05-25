@@ -4,8 +4,8 @@ import com.javarush.island.ochirov.configs.records.OrganismConfig;
 import com.javarush.island.ochirov.consts.StringErrors;
 import com.javarush.island.ochirov.organism.Organism;
 import com.javarush.island.ochirov.organism.RegisteredOrganism;
-import com.javarush.island.ochirov.organism.animal.carnivore.Wolf;
-import com.javarush.island.ochirov.organism.animal.herbivore.Rabbit;
+import com.javarush.island.ochirov.organism.animal.carnivore.*;
+import com.javarush.island.ochirov.organism.animal.herbivore.*;
 import com.javarush.island.ochirov.organism.plant.Grass;
 import com.javarush.island.ochirov.organism.plant.Plant;
 import com.javarush.island.ochirov.services.*;
@@ -56,23 +56,25 @@ public class OrganismFactory {
 
     private static void registerAnnotatedOrganisms() {
         registerOrganism(Wolf.class);
+        registerOrganism(Boa.class);
+        registerOrganism(Fox.class);
+        registerOrganism(Bear.class);
+        registerOrganism(Eagle.class);
+        registerOrganism(Horse.class);
+        registerOrganism(Deer.class);
         registerOrganism(Rabbit.class);
+        registerOrganism(Mouse.class);
+        registerOrganism(Goat.class);
+        registerOrganism(Sheep.class);
+        registerOrganism(Boar.class);
+        registerOrganism(Buffalo.class);
+        registerOrganism(Duck.class);
+        registerOrganism(Caterpillar.class);
         registerOrganism(Grass.class);
     }
 
     private static void registerOrganism(Class<? extends Organism> clazz) {
-        var annotation = clazz.getAnnotation(RegisteredOrganism.class);
-        if (annotation == null) {
-            throw new IllegalArgumentException(String.format(
-                    StringErrors.REGISTERED_ORGANISM_REQUIRED_TEMPLATE, clazz));
-        }
-
-        var configKey = annotation.configKey();
-        if (!configs.containsKey(configKey)) {
-            throw new IllegalStateException(String.format(
-                    StringErrors.NO_CONFIG_FOUND, configKey));
-        }
-
+        var configKey = getConfigKey(clazz);
         try {
             var serviceParams = isPlant(clazz)
                     ? plantServiceConstructorParams : animalServiceConstructorParams;
@@ -81,6 +83,21 @@ public class OrganismFactory {
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(String.format(StringErrors.MISSING_ORGANISM_CONFIG_CONSTRUCTOR, clazz.getSimpleName()));
         }
+    }
+
+    private static String getConfigKey(Class<? extends Organism> clazz) {
+        var annotation = clazz.getAnnotation(RegisteredOrganism.class);
+        if (annotation == null) {
+            throw new IllegalArgumentException(String.format(
+                    StringErrors.REGISTERED_ORGANISM_REQUIRED_TEMPLATE, clazz));
+        }
+
+        var configKey = annotation.value().getKey();
+        if (!configs.containsKey(configKey)) {
+            throw new IllegalStateException(String.format(
+                    StringErrors.NO_CONFIG_FOUND, configKey));
+        }
+        return configKey;
     }
 
     static Organism createOrganism(String type) {

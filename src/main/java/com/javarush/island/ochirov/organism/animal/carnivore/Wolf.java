@@ -1,10 +1,11 @@
 package com.javarush.island.ochirov.organism.animal.carnivore;
 
 import com.javarush.island.ochirov.configs.records.OrganismConfig;
+import com.javarush.island.ochirov.configs.utils.DefaultOrganismConfigFactory;
 import com.javarush.island.ochirov.organism.RegisteredOrganism;
 import com.javarush.island.ochirov.services.AbstractOrganismService;
 
-@RegisteredOrganism(configKey = "wolf")
+@RegisteredOrganism(DefaultOrganismConfigFactory.OrganismType.WOLF)
 public class Wolf extends Carnivore {
     public Wolf(OrganismConfig config,
                 AbstractOrganismService movementService,
