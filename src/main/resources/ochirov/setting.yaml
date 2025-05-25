@@ -1,7 +1,7 @@
 simulation:
   durationSeconds: 6000
-  width: 2
-  height: 2
+  width: 10
+  height: 10
   initDelay: 0
   period: 1000
   timeUnit: "MILLISECONDS"
@@ -11,15 +11,107 @@ simulation:
 organisms:
   wolf:
     key: "wolf"
-    displaySymbol: "W"
+    displaySymbol: "Wf"
     maxPerCell: 30
     speed: 3
     satiety: 8.0
     weight: 50.0
-    starvation: 1.0
-    reproduceProbability: 30
+    starvation: 4.0
+    reproduceProbability: 10
     eatProbabilities:
+      horse: 10
+      deer: 15
       rabbit: 60
+      mouse: 80
+      goat: 60
+      sheep: 70
+      boar: 15
+      buffalo: 10
+      duck: 10
+  boa:
+    key: "boa"
+    displaySymbol: "Bo"
+    maxPerCell: 30
+    speed: 1
+    satiety: 3.0
+    weight: 15.0
+    starvation: 1.5
+    reproduceProbability: 10
+    eatProbabilities:
+      fox: 15
+      rabbit: 20
+      mouse: 40
+      duck: 10
+  fox:
+    key: "fox"
+    displaySymbol: "F"
+    maxPerCell: 30
+    speed: 2
+    satiety: 2.0
+    weight: 8.0
+    starvation: 1.0
+    reproduceProbability: 10
+    eatProbabilities:
+      rabbit: 70
+      mouse: 90
+      duck: 60
+      caterpillar: 40
+  bear:
+    key: "bear"
+    displaySymbol: "Be"
+    maxPerCell: 5
+    speed: 2
+    satiety: 80.0
+    weight: 500.0
+    starvation: 40.0
+    reproduceProbability: 5
+    eatProbabilities:
+      boa: 80
+      horse: 40
+      deer: 80
+      rabbit: 80
+      mouse: 90
+      goat: 70
+      sheep: 70
+      boar: 50
+      buffalo: 20
+      duck: 10
+  eagle:
+    key: "eagle"
+    displaySymbol: "E"
+    maxPerCell: 20
+    speed: 3
+    satiety: 1.0
+    weight: 6.0
+    starvation: 0.5
+    reproduceProbability: 10
+    eatProbabilities:
+      fox: 10
+      rabbit: 90
+      mouse: 90
+      duck: 80
+  horse:
+    key: "horse"
+    displaySymbol: "H"
+    maxPerCell: 20
+    speed: 4
+    satiety: 60.0
+    weight: 400.0
+    starvation: 20.0
+    reproduceProbability: 40
+    eatProbabilities:
+      grass: 100
+  deer:
+    key: "deer"
+    displaySymbol: "Dr"
+    maxPerCell: 20
+    speed: 4
+    satiety: 50.0
+    weight: 300.0
+    starvation: 20.0
+    reproduceProbability: 40
+    eatProbabilities:
+      grass: 100
   rabbit:
     key: "rabbit"
     displaySymbol: "R"
@@ -27,18 +119,98 @@ organisms:
     speed: 2
     satiety: 0.45
     weight: 2.0
-    starvation: 0.1
+    starvation: 0.15
     reproduceProbability: 100
+    eatProbabilities:
+      grass: 100
+  mouse:
+    key: "mouse"
+    displaySymbol: "M"
+    maxPerCell: 500
+    speed: 1
+    satiety: 0.01
+    weight: 0.05
+    starvation: 0.001
+    reproduceProbability: 100
+    eatProbabilities:
+      caterpillar: 90
+      grass: 100
+  goat:
+    key: "goat"
+    displaySymbol: "Gt"
+    maxPerCell: 140
+    speed: 3
+    satiety: 10.0
+    weight: 60.0
+    starvation: 1.0
+    reproduceProbability: 30
+    eatProbabilities:
+      grass: 100
+  sheep:
+    key: "sheep"
+    displaySymbol: "Sh"
+    maxPerCell: 140
+    speed: 3
+    satiety: 15.0
+    weight: 70.0
+    starvation: 2.0
+    reproduceProbability: 30
+    eatProbabilities:
+      grass: 100
+  boar:
+    key: "boar"
+    displaySymbol: "Bo"
+    maxPerCell: 50
+    speed: 2
+    satiety: 50.0
+    weight: 400.0
+    starvation: 5.0
+    reproduceProbability: 30
+    eatProbabilities:
+      mouse: 50
+      caterpillar: 90
+      grass: 100
+  buffalo:
+    key: "buffalo"
+    displaySymbol: "Bf"
+    maxPerCell: 10
+    speed: 3
+    satiety: 100.0
+    weight: 700.0
+    starvation: 20.0
+    reproduceProbability: 30
+    eatProbabilities:
+      grass: 100
+  duck:
+    key: "duck"
+    displaySymbol: "Dk"
+    maxPerCell: 200
+    speed: 4
+    satiety: 0.15
+    weight: 1.0
+    starvation: 0.02
+    reproduceProbability: 20
+    eatProbabilities:
+      caterpillar: 90
+      grass: 100
+  caterpillar:
+    key: "caterpillar"
+    displaySymbol: "C"
+    maxPerCell: 1000
+    speed: 0
+    satiety: 0.0
+    weight: 0.01
+    starvation: 0.0
+    reproduceProbability: 20
     eatProbabilities:
       grass: 100
   grass:
     key: "grass"
-    displaySymbol: "G"
+    displaySymbol: "Gs"
     maxPerCell: 200
     speed: 0
     satiety: 0
-    weight: 1
+    weight: 1.0
     starvation: 0
     reproduceProbability: 100
-    eatProbabilities:
-      wolf: 0
+    eatProbabilities: null
