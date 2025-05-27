@@ -12,15 +12,17 @@ import java.util.concurrent.TimeUnit;
 public class ApplicationRunner {
 
     public static void main(String[] args) {
-        var config = initEntities();
+        var config = ConfigsLoader.loadConfig();
+        init(config);
 
-        var simulation = new Simulation(config.simulation());
+        var simulationConfig = config.simulation();
+        var simulation = new Simulation(simulationConfig);
         simulation.start();
 
         Runtime.getRuntime().addShutdownHook(new Thread(simulation::stop));
 
         try {
-            TimeUnit.SECONDS.sleep(config.simulation().durationSeconds());
+            TimeUnit.SECONDS.sleep(simulationConfig.durationSeconds());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         } finally {
@@ -28,24 +30,24 @@ public class ApplicationRunner {
         }
     }
 
-    private static AppConfig initEntities() {
-        var config = ConfigsLoader.loadConfig();
-        var simulationConfig = config.simulation();
-        ConsoleOutputManager.init(simulationConfig.detailedLog(),
+    private static void init(AppConfig appConfig) {
+        var simulationConfig = appConfig.simulation();
+        var detailedLog = simulationConfig.detailedLog();
+
+        ConsoleOutputManager.init(detailedLog,
                 simulationConfig.consoleViewIslandHeight(),
                 simulationConfig.consoleViewIslandWidth());
-        AbstractOrganismService movementService = new MovementService(simulationConfig.detailedLog());
-        AbstractOrganismService eatingService = new EatingService(simulationConfig.detailedLog());
-        AbstractOrganismService deathService = new DeathService(simulationConfig.detailedLog());
-        AbstractOrganismService reproduceService = new ReproduceService(simulationConfig.detailedLog());
+
+        AbstractOrganismService movementService = new MovementService(detailedLog);
+        AbstractOrganismService eatingService = new EatingService(detailedLog);
+        AbstractOrganismService deathService = new DeathService(detailedLog);
+        AbstractOrganismService reproduceService = new ReproduceService(detailedLog);
 
         OrganismFactory.init(
-                config.organisms(),
+                appConfig.organisms(),
                 movementService,
                 eatingService,
                 deathService,
                 reproduceService);
-
-        return config;
     }
 }

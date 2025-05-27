@@ -17,8 +17,8 @@ public record OrganismConfig(
         @JsonProperty("eatProbabilities") Map<String, Integer> eatProbabilities) {
 
     public OrganismConfig {
-        eatProbabilities = eatProbabilities == null ?
-                Collections.emptyMap() :
-                Map.copyOf(eatProbabilities);
+        eatProbabilities = eatProbabilities == null
+                ? Collections.emptyMap()
+                : Map.copyOf(eatProbabilities);
     }
 }

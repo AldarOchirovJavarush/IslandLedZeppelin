@@ -40,17 +40,8 @@ public class ConfigsLoader {
     }
 
     private static SimulationConfig createDefaultSimulationConfig() {
-        return new SimulationConfig(
-                600,
-                20,
-                15,
-                0L,
-                2000L,
-                TimeUnit.MILLISECONDS,
-                20,
-                false,
-                15,
-                10
+        return new SimulationConfig(600, 20, 15, 0L, 2000L,
+                TimeUnit.MILLISECONDS, 20, false, 15, 10
         );
     }
 }
